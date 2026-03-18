@@ -1,0 +1,989 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Weekly Flights — Petit Philippe</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+
+<style>
+/* ─── DESIGN TOKENS ─── */
+:root {
+  --ink:       #1a1410;
+  --parchment: #f5f0e8;
+  --cream:     #faf7f2;
+  --burgundy:  #6b1c2e;
+  --burgundy2: #8c2a3e;
+  --gold:      #b8925a;
+  --gold-lt:   #d4ab72;
+  --mist:      #e8e2d8;
+  --mid:       #7a6f65;
+  --cork:      #c9b99a;
+  --label:     #3d3028;
+
+  --ff-serif: 'Cormorant Garamond', Georgia, serif;
+  --ff-sans:  'Jost', system-ui, sans-serif;
+
+  --r: 4px;
+  --gap: clamp(1.5rem, 4vw, 3rem);
+  --max: 860px;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  background: var(--cream);
+  color: var(--ink);
+  font-family: var(--ff-sans);
+  font-weight: 300;
+  line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
+}
+a { color: inherit; text-decoration: none; }
+img { display: block; max-width: 100%; }
+
+/* ─── UTILITY ─── */
+.container { max-width: var(--max); margin: 0 auto; padding: 0 clamp(1.2rem, 5vw, 2.5rem); }
+.eyebrow {
+  font-family: var(--ff-sans);
+  font-size: 0.65rem;
+  font-weight: 500;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--gold);
+}
+.rule {
+  border: none;
+  border-top: 1px solid var(--mist);
+  margin: 2.5rem 0;
+}
+
+/* ─── HEADER STRIP ─── */
+.site-header {
+  background: var(--ink);
+  padding: 0.9rem 0;
+  position: sticky; top: 0; z-index: 100;
+  box-shadow: 0 1px 12px rgba(0,0,0,0.35);
+}
+.site-header .container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+.site-header .logo {
+  font-family: var(--ff-serif);
+  font-size: 1.15rem;
+  font-weight: 400;
+  letter-spacing: 0.12em;
+  color: var(--cork);
+  text-transform: uppercase;
+}
+.site-header nav { display: flex; gap: 1.4rem; }
+.site-header nav a {
+  font-size: 0.68rem;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--mist);
+  transition: color .2s;
+}
+.site-header nav a:hover { color: var(--gold-lt); }
+
+/* ─── HERO ─── */
+.hero {
+  background: var(--ink);
+  padding: clamp(3rem, 8vw, 5.5rem) 0 clamp(2.5rem, 6vw, 4rem);
+  position: relative;
+  overflow: hidden;
+}
+.hero::before {
+  content: '';
+  position: absolute; inset: 0;
+  background:
+    radial-gradient(ellipse 60% 80% at 80% 50%, rgba(107,28,46,0.28) 0%, transparent 70%),
+    radial-gradient(ellipse 40% 60% at 10% 80%, rgba(184,146,90,0.08) 0%, transparent 60%);
+  pointer-events: none;
+}
+.hero .container { position: relative; }
+.hero-label {
+  display: inline-flex; align-items: center; gap: 0.5rem;
+  margin-bottom: 1.2rem;
+}
+.hero-label::before,
+.hero-label::after {
+  content: '';
+  display: block; width: 28px; height: 1px;
+  background: var(--gold);
+}
+.hero h1 {
+  font-family: var(--ff-serif);
+  font-size: clamp(2.4rem, 7vw, 4rem);
+  font-weight: 300;
+  line-height: 1.12;
+  color: var(--parchment);
+  letter-spacing: 0.01em;
+  margin-bottom: 1rem;
+}
+.hero h1 em { font-style: italic; color: var(--cork); }
+.hero-sub {
+  font-size: clamp(0.85rem, 2vw, 0.95rem);
+  color: var(--cork);
+  letter-spacing: 0.08em;
+  margin-bottom: 2rem;
+}
+.hero-btns { display: flex; flex-wrap: wrap; gap: 0.8rem; }
+.btn {
+  display: inline-block;
+  padding: 0.65rem 1.6rem;
+  font-family: var(--ff-sans);
+  font-size: 0.7rem;
+  font-weight: 500;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  border-radius: var(--r);
+  transition: all .22s;
+  cursor: pointer;
+}
+.btn-primary {
+  background: var(--burgundy);
+  color: var(--parchment);
+  border: 1px solid var(--burgundy);
+}
+.btn-primary:hover { background: var(--burgundy2); border-color: var(--burgundy2); }
+.btn-ghost {
+  background: transparent;
+  color: var(--cork);
+  border: 1px solid rgba(201,185,154,0.4);
+}
+.btn-ghost:hover { border-color: var(--cork); color: var(--parchment); }
+
+/* ─── HOW IT WORKS ─── */
+.how {
+  padding: clamp(2.5rem, 6vw, 4rem) 0;
+  background: var(--parchment);
+  border-bottom: 1px solid var(--mist);
+}
+.how h2 {
+  font-family: var(--ff-serif);
+  font-size: clamp(1.5rem, 4vw, 2rem);
+  font-weight: 400;
+  letter-spacing: 0.03em;
+  color: var(--label);
+  margin-bottom: 0.3rem;
+}
+.how-intro {
+  color: var(--mid);
+  font-size: 0.9rem;
+  margin-bottom: 2.2rem;
+  max-width: 560px;
+}
+.how-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1.4rem;
+}
+.how-card {
+  background: var(--cream);
+  border: 1px solid var(--mist);
+  border-radius: 6px;
+  padding: 1.5rem 1.4rem;
+  position: relative;
+}
+.how-card .num {
+  font-family: var(--ff-serif);
+  font-size: 2.4rem;
+  font-weight: 300;
+  color: var(--cork);
+  line-height: 1;
+  margin-bottom: 0.6rem;
+  display: block;
+}
+.how-card h3 {
+  font-family: var(--ff-serif);
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--label);
+  margin-bottom: 0.4rem;
+  letter-spacing: 0.02em;
+}
+.how-card p { font-size: 0.82rem; color: var(--mid); line-height: 1.65; }
+.hours-row {
+  display: flex; flex-wrap: wrap; gap: 0.6rem;
+  margin-top: 2rem;
+}
+.hours-chip {
+  background: var(--ink);
+  color: var(--cork);
+  font-size: 0.7rem;
+  letter-spacing: 0.1em;
+  padding: 0.45rem 1rem;
+  border-radius: 100px;
+}
+
+/* ─── CURRENT FLIGHT ─── */
+.current {
+  padding: clamp(2.5rem, 6vw, 4.5rem) 0;
+}
+.section-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.8rem;
+  margin-bottom: 1.8rem;
+}
+.section-head h2 {
+  font-family: var(--ff-serif);
+  font-size: clamp(1.6rem, 4vw, 2.2rem);
+  font-weight: 400;
+  color: var(--label);
+  letter-spacing: 0.02em;
+}
+.section-head a {
+  font-size: 0.7rem;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--burgundy);
+  border-bottom: 1px solid rgba(107,28,46,0.3);
+  padding-bottom: 1px;
+  transition: border-color .2s;
+}
+.section-head a:hover { border-color: var(--burgundy); }
+
+.flight-card {
+  background: var(--ink);
+  border-radius: 8px;
+  overflow: hidden;
+  display: grid;
+  grid-template-columns: 1fr;
+}
+@media(min-width:620px){
+  .flight-card { grid-template-columns: 1fr 1fr; }
+}
+.flight-left {
+  padding: clamp(1.8rem, 5vw, 2.8rem);
+  border-right: 1px solid rgba(255,255,255,0.06);
+}
+.flight-right {
+  padding: clamp(1.8rem, 5vw, 2.8rem);
+  display: flex; flex-direction: column; justify-content: space-between;
+  gap: 1.5rem;
+}
+.flight-meta {
+  display: flex; flex-wrap: wrap; gap: 0.5rem;
+  margin-bottom: 1.2rem;
+}
+.tag {
+  font-size: 0.62rem;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  padding: 0.28rem 0.7rem;
+  border-radius: 100px;
+}
+.tag-type { background: rgba(107,28,46,0.6); color: var(--cork); }
+.tag-price { background: rgba(184,146,90,0.18); color: var(--gold-lt); }
+.tag-wines { background: rgba(255,255,255,0.07); color: var(--mist); }
+.flight-dates {
+  font-size: 0.72rem;
+  color: var(--mid);
+  letter-spacing: 0.06em;
+  margin-bottom: 0.6rem;
+}
+.flight-title {
+  font-family: var(--ff-serif);
+  font-size: clamp(1.5rem, 4vw, 2.1rem);
+  font-weight: 400;
+  color: var(--parchment);
+  line-height: 1.18;
+  margin-bottom: 0.5rem;
+}
+.flight-subtitle {
+  font-family: var(--ff-serif);
+  font-style: italic;
+  font-size: 0.95rem;
+  color: var(--cork);
+  margin-bottom: 1.4rem;
+}
+.wine-list { list-style: none; display: flex; flex-direction: column; gap: 0.55rem; }
+.wine-list li {
+  display: flex; align-items: flex-start; gap: 0.5rem;
+  font-size: 0.82rem;
+  color: var(--mist);
+  line-height: 1.5;
+}
+.wine-list li::before {
+  content: '◦';
+  color: var(--gold);
+  flex-shrink: 0;
+  margin-top: 0.05em;
+}
+.wine-list a { color: var(--mist); border-bottom: 1px solid rgba(255,255,255,0.12); transition: border-color .2s, color .2s; }
+.wine-list a:hover { color: var(--gold-lt); border-color: var(--gold-lt); }
+.flight-shop-links { display: flex; flex-wrap: wrap; gap: 0.7rem; margin-top: auto; }
+.link-arrow {
+  font-size: 0.7rem;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--gold);
+  display: inline-flex; align-items: center; gap: 0.3rem;
+  transition: gap .2s;
+}
+.link-arrow:hover { gap: 0.5rem; }
+.link-arrow::after { content: '→'; }
+
+/* upcoming */
+.upcoming-panel {
+  border-top: 1px solid rgba(255,255,255,0.08);
+  padding-top: 1.4rem;
+}
+.upcoming-panel .eyebrow { margin-bottom: 0.7rem; }
+.upcoming-list { display: flex; flex-direction: column; gap: 0.55rem; }
+.upcoming-item {
+  display: flex; align-items: baseline; gap: 0.7rem;
+  font-size: 0.8rem;
+  color: var(--mid);
+}
+.upcoming-item strong { color: var(--mist); font-weight: 400; }
+.upcoming-item .cat {
+  font-size: 0.62rem;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--burgundy2);
+  background: rgba(107,28,46,0.25);
+  padding: 0.15rem 0.5rem;
+  border-radius: 100px;
+  white-space: nowrap;
+}
+.notify-row {
+  display: flex; flex-wrap: wrap; gap: 0.8rem;
+  margin-top: 1.4rem;
+}
+
+/* ─── PAST FLIGHTS ─── */
+.archive {
+  padding: clamp(2rem, 5vw, 4rem) 0 clamp(3rem, 6vw, 5rem);
+  background: var(--parchment);
+  border-top: 1px solid var(--mist);
+}
+.archive-toggle-row {
+  display: flex; align-items: center; gap: 1rem;
+  margin-bottom: 2rem;
+  flex-wrap: wrap;
+}
+.filter-btn {
+  font-size: 0.68rem;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding: 0.4rem 1rem;
+  border-radius: 100px;
+  border: 1px solid var(--mist);
+  background: transparent;
+  color: var(--mid);
+  cursor: pointer;
+  transition: all .18s;
+}
+.filter-btn.active, .filter-btn:hover {
+  background: var(--ink);
+  color: var(--cork);
+  border-color: var(--ink);
+}
+
+.month-group { margin-bottom: 2.8rem; }
+.month-label {
+  font-family: var(--ff-serif);
+  font-size: 1.2rem;
+  font-weight: 400;
+  color: var(--label);
+  letter-spacing: 0.06em;
+  margin-bottom: 1.2rem;
+  padding-bottom: 0.6rem;
+  border-bottom: 1px solid var(--mist);
+}
+
+.past-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 1rem;
+}
+.past-card {
+  background: var(--cream);
+  border: 1px solid var(--mist);
+  border-radius: 6px;
+  padding: 1.3rem;
+  transition: box-shadow .2s, transform .2s;
+  display: flex; flex-direction: column; gap: 0.6rem;
+}
+.past-card:hover {
+  box-shadow: 0 4px 20px rgba(0,0,0,0.09);
+  transform: translateY(-1px);
+}
+.past-card .flight-dates { margin: 0; }
+.past-card .past-title {
+  font-family: var(--ff-serif);
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--label);
+  line-height: 1.2;
+}
+.past-card .past-sub {
+  font-family: var(--ff-serif);
+  font-style: italic;
+  font-size: 0.85rem;
+  color: var(--mid);
+}
+.past-card .wine-count {
+  font-size: 0.72rem;
+  color: var(--mid);
+  margin-top: auto;
+}
+.past-card .card-links { display: flex; gap: 1rem; flex-wrap: wrap; margin-top: 0.3rem; }
+.past-card .card-links a {
+  font-size: 0.68rem; font-weight: 500;
+  letter-spacing: 0.1em; text-transform: uppercase;
+  color: var(--burgundy);
+  display: inline-flex; align-items: center; gap: 0.25rem;
+  transition: color .2s;
+}
+.past-card .card-links a:hover { color: var(--burgundy2); }
+.past-card .card-links a::after { content: '↗'; font-size: 0.6em; }
+
+/* hidden via filter */
+.past-card[data-type].hidden { display: none; }
+
+/* ─── FOOTER ─── */
+.site-footer {
+  background: var(--ink);
+  color: var(--mid);
+  padding: 3rem 0 2rem;
+}
+.footer-inner {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 2rem;
+  margin-bottom: 2rem;
+}
+.footer-col h4 {
+  font-family: var(--ff-sans);
+  font-size: 0.65rem; font-weight: 500;
+  letter-spacing: 0.18em; text-transform: uppercase;
+  color: var(--cork); margin-bottom: 0.9rem;
+}
+.footer-col p, .footer-col a {
+  font-size: 0.8rem; color: var(--mid); line-height: 1.9;
+  display: block;
+  transition: color .18s;
+}
+.footer-col a:hover { color: var(--gold-lt); }
+.footer-bottom {
+  border-top: 1px solid rgba(255,255,255,0.07);
+  padding-top: 1.5rem;
+  display: flex; justify-content: space-between; flex-wrap: wrap; gap: 0.5rem;
+  font-size: 0.72rem; color: rgba(122,111,101,0.6);
+  letter-spacing: 0.05em;
+}
+
+/* ─── SCROLL FADE IN ─── */
+.fade-in {
+  opacity: 0;
+  transform: translateY(16px);
+  transition: opacity 0.55s ease, transform 0.55s ease;
+}
+.fade-in.visible {
+  opacity: 1;
+  transform: none;
+}
+
+/* ─── RESPONSIVE ─── */
+@media(max-width:500px){
+  .site-header nav { display: none; }
+  .flight-card { grid-template-columns: 1fr; }
+  .flight-left { border-right: none; border-bottom: 1px solid rgba(255,255,255,0.06); }
+}
+</style>
+</head>
+<body>
+
+<!-- ═══ SITE HEADER ═══ -->
+<header class="site-header">
+  <div class="container">
+    <a href="https://www.petitphilippe.com" class="logo">Petit Philippe</a>
+    <nav>
+      <a href="https://www.petitphilippe.com/shop-region/">Shop</a>
+      <a href="https://www.petitphilippe.com/upcoming-events/">Events</a>
+      <a href="https://www.petitphilippe.com/service/weekly-tastings/">Tastings</a>
+      <a href="https://www.petitphilippe.com/service/groups-private-events/">Book Event</a>
+    </nav>
+  </div>
+</header>
+
+<!-- ═══ HERO ═══ -->
+<section class="hero">
+  <div class="container">
+    <div class="hero-label eyebrow">Weekly Tastings · Charlotte, NC</div>
+    <h1>Weekly Wine <em>Flights</em><br>at Petit Philippe</h1>
+    <p class="hero-sub">Thursday – Sunday &nbsp;·&nbsp; Curated by our sommeliers &nbsp;·&nbsp; No reservation needed</p>
+    <div class="hero-btns">
+      <a href="https://www.petitphilippe.com/tags/current-flight/" class="btn btn-primary">Shop This Week's Wines</a>
+      <a href="https://maps.app.goo.gl/6BYnLAPhkxD6uKGu8" class="btn btn-ghost">Get Directions</a>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ HOW IT WORKS ═══ -->
+<section class="how">
+  <div class="container">
+    <div class="eyebrow" style="margin-bottom:0.5rem">The Experience</div>
+    <h2>How Our Tastings Work</h2>
+    <p class="how-intro">Every week we curate a themed flight — sometimes a storied region, a single producer, a varietal deep-dive, or a creative theme. Walk in and let us guide you.</p>
+    <div class="how-grid">
+      <div class="how-card fade-in">
+        <span class="num">01</span>
+        <h3>Walk In</h3>
+        <p>No reservation needed. Visit our tasting counter Thursday through Sunday during tasting hours.</p>
+      </div>
+      <div class="how-card fade-in">
+        <span class="num">02</span>
+        <h3>Meet the Flight</h3>
+        <p>3–4 wines tied by a narrative — region, producer, varietal, or theme. Each pour is 2 oz, served one at a time.</p>
+      </div>
+      <div class="how-card fade-in">
+        <span class="num">03</span>
+        <h3>Learn as You Sip</h3>
+        <p>Our team walks you through each wine: region, producer, what to look for — guided but never stuffy.</p>
+      </div>
+      <div class="how-card fade-in">
+        <span class="num">04</span>
+        <h3>Take a Bottle Home</h3>
+        <p>Love something? Purchase any bottle and open it on the spot — no corkage fee. By-the-glass list rotates weekly too.</p>
+      </div>
+    </div>
+    <div class="hours-row">
+      <span class="hours-chip">Thu – Fri &nbsp;1 pm – 9 pm</span>
+      <span class="hours-chip">Saturday &nbsp;11 am – 9 pm</span>
+      <span class="hours-chip">Sunday &nbsp;1 pm – 7 pm</span>
+      <span class="hours-chip">4001 Park Rd, Charlotte</span>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ CURRENT FLIGHT ═══ -->
+<section class="current">
+  <div class="container">
+    <div class="section-head">
+      <div>
+        <div class="eyebrow" style="margin-bottom:0.35rem">On Pour Now</div>
+        <h2>This Week's Flight</h2>
+      </div>
+      <a href="https://www.petitphilippe.com/tags/current-flight/">Shop these wines →</a>
+    </div>
+
+    <div class="flight-card">
+      <!-- LEFT: flight detail -->
+      <div class="flight-left">
+        <div class="flight-meta">
+          <span class="tag tag-type">Varietal</span>
+          <span class="tag tag-price">$32</span>
+          <span class="tag tag-wines">3 Wines</span>
+        </div>
+        <div class="flight-dates">March 12 – 15, 2026</div>
+        <h3 class="flight-title">S.A. Prüm: Riesling,<br>Reintroduced</h3>
+        <p class="flight-subtitle">Three wines from one of Germany's most iconic estates, celebrating the timeless power of Riesling.</p>
+        <ul class="wine-list">
+          <li><a href="https://www.petitphilippe.com/copy-of-joh-jos-pruem-graacher-himmelreich-rieslin.html">S.A. Prüm Blue Trocken Riesling 2022</a></li>
+          <li><a href="https://www.petitphilippe.com/copy-of-sa-pruem-blue-trocken-riesling.html">S.A. Prüm Dry Riesling Wehlen Ortswein 2019</a></li>
+          <li><a href="https://www.petitphilippe.com/copy-of-sa-pruem-dry-riesling-wehlen-ortswein-2018.html">S.A. Prüm 'Graacher Domprobst GG' Riesling 2017</a></li>
+        </ul>
+        <div class="flight-shop-links" style="margin-top:1.4rem">
+          <a href="https://www.petitphilippe.com/shop-region/other-countries/germany/" class="link-arrow">Shop German Wine</a>
+          <a href="https://www.petitphilippe.com/shop-category/white/other-white-varietals/riesling/" class="link-arrow">Shop Riesling</a>
+        </div>
+      </div>
+
+      <!-- RIGHT: upcoming + info -->
+      <div class="flight-right">
+        <div>
+          <div class="upcoming-panel">
+            <div class="eyebrow">Coming Up</div>
+            <ul class="upcoming-list">
+              <li class="upcoming-item"><strong>Mar 18–22</strong> Jura, France <span class="cat">Region</span></li>
+              <li class="upcoming-item"><strong>Mar 25–29</strong> Women of Wine <span class="cat">Theme</span></li>
+              <li class="upcoming-item"><strong>Apr 2–5</strong> Dorrence <span class="cat">Producer</span></li>
+            </ul>
+          </div>
+          <div class="notify-row">
+            <a href="https://lp.constantcontactpages.com/su/fcCXEdr/newsletter" class="btn btn-primary">Get Weekly Updates</a>
+            <a href="https://www.instagram.com/petitphilippe/" class="btn btn-ghost">Follow on Instagram</a>
+          </div>
+        </div>
+        <div style="border-top:1px solid rgba(255,255,255,0.08); padding-top:1.2rem;">
+          <div class="eyebrow" style="margin-bottom:0.6rem">Good to Know</div>
+          <p style="font-size:0.8rem;color:var(--mid);line-height:1.75;">
+            Flights: <strong style="color:var(--mist)">$23–$35</strong> · By-the-glass: <strong style="color:var(--mist)">$14–$25</strong><br>
+            Open any bottle you buy — <strong style="color:var(--mist)">no corkage fee</strong>.<br>
+            Questions? <a href="mailto:info@petitphilippe.com" style="color:var(--gold-lt)">Email us</a> or call <a href="tel:7043329910" style="color:var(--gold-lt)">704-332-9910</a>
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ PAST FLIGHTS ARCHIVE ═══ -->
+<section class="archive">
+  <div class="container">
+    <div class="section-head">
+      <div>
+        <div class="eyebrow" style="margin-bottom:0.35rem">Archive</div>
+        <h2>Past Flights</h2>
+      </div>
+    </div>
+
+    <div class="archive-toggle-row">
+      <button class="filter-btn active" data-filter="all">All</button>
+      <button class="filter-btn" data-filter="Varietal">Varietal</button>
+      <button class="filter-btn" data-filter="Region">Region</button>
+      <button class="filter-btn" data-filter="Producer">Producer</button>
+      <button class="filter-btn" data-filter="Theme">Theme</button>
+      <button class="filter-btn" data-filter="Blind">Blind</button>
+    </div>
+
+    <!-- MARCH 2026 -->
+    <div class="month-group fade-in">
+      <div class="month-label">March 2026</div>
+      <div class="past-grid">
+        <div class="past-card" data-type="Varietal">
+          <div class="flight-dates">March 5 – 8, 2026</div>
+          <div style="display:flex;gap:.4rem;flex-wrap:wrap"><span class="tag tag-type">Varietal</span><span class="tag tag-price">$33</span><span class="tag tag-wines">4 Wines</span></div>
+          <div class="past-title">Field Blends: The Voice of the Vineyard</div>
+          <div class="past-sub">An exploration of how mixed plantings and co-fermentation shape a wine.</div>
+          <div class="wine-count">Groiss · Walter Scott · Drew · Le Piane</div>
+          <div class="card-links">
+            <a href="https://conta.cc/4qYtVIr">Read More</a>
+            <a href="https://www.petitphilippe.com/tags/field-blends/">Shop Wines</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- FEBRUARY 2026 -->
+    <div class="month-group fade-in">
+      <div class="month-label">February 2026</div>
+      <div class="past-grid">
+        <div class="past-card" data-type="Producer">
+          <div class="flight-dates">Feb 26 – Mar 1, 2026</div>
+          <div style="display:flex;gap:.4rem;flex-wrap:wrap"><span class="tag tag-type">Producer</span><span class="tag tag-price">$25</span><span class="tag tag-wines">3 Wines</span></div>
+          <div class="past-title">Tenuta de Sterlich</div>
+          <div class="past-sub">A fresh, vibrant trio shaped by Abruzzo's elevation and coastal breezes.</div>
+          <div class="wine-count">Trebbiano · Cerasuolo · Montepulciano</div>
+          <div class="card-links">
+            <a href="https://conta.cc/4qYtVIr">Read More</a>
+            <a href="https://www.petitphilippe.com/shop-region/italy/">Shop Wines</a>
+          </div>
+        </div>
+        <div class="past-card" data-type="Region">
+          <div class="flight-dates">Feb 18 – 22, 2026</div>
+          <div style="display:flex;gap:.4rem;flex-wrap:wrap"><span class="tag tag-type">Region</span><span class="tag tag-price">$35</span><span class="tag tag-wines">3 Wines</span></div>
+          <div class="past-title">Washington State: Built for Bold Reds</div>
+          <div class="past-sub">Sun, soil, and structure from Washington's powerhouse growing regions.</div>
+          <div class="wine-count">Andrew Will · Januik · Hanatoro</div>
+          <div class="card-links">
+            <a href="https://conta.cc/3OkOoJU">Read More</a>
+            <a href="https://www.petitphilippe.com/shop-region/washington/">Shop Wines</a>
+          </div>
+        </div>
+        <div class="past-card" data-type="Theme">
+          <div class="flight-dates">Feb 11 – 15, 2026</div>
+          <div style="display:flex;gap:.4rem;flex-wrap:wrap"><span class="tag tag-type">Theme</span><span class="tag tag-price">$35</span><span class="tag tag-wines">3 Wines</span></div>
+          <div class="past-title">Blush, Bright & Bold: Valentine's Flight</div>
+          <div class="past-sub">A romantic French trio perfect for Valentine's weekend.</div>
+          <div class="wine-count">Coutier Rosé · Sancerre · Saint-Émilion</div>
+          <div class="card-links">
+            <a href="https://conta.cc/4rF3cBs">Read More</a>
+            <a href="https://www.petitphilippe.com/petit-picks/valentines-wine-gifts/">Shop Wines</a>
+          </div>
+        </div>
+        <div class="past-card" data-type="Varietal">
+          <div class="flight-dates">Feb 4 – 8, 2026</div>
+          <div style="display:flex;gap:.4rem;flex-wrap:wrap"><span class="tag tag-type">Varietal</span><span class="tag tag-price">$32</span><span class="tag tag-wines">4 Wines</span></div>
+          <div class="past-title">Cabernet Franc from Around the World</div>
+          <div class="past-sub">How this noble grape expresses itself across four regions and styles.</div>
+          <div class="wine-count">Bobby Wallace · Lambert · Foxen · Ernesto Catena</div>
+          <div class="card-links">
+            <a href="https://conta.cc/4qdllFb">Read More</a>
+            <a href="https://www.petitphilippe.com/shop-category/red/other-red-varietals/cabernet-franc">Shop Wines</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- JANUARY 2026 -->
+    <div class="month-group fade-in">
+      <div class="month-label">January 2026</div>
+      <div class="past-grid">
+        <div class="past-card" data-type="Producer">
+          <div class="flight-dates">Jan 28 – 31, 2026</div>
+          <div style="display:flex;gap:.4rem;flex-wrap:wrap"><span class="tag tag-type">Producer</span><span class="tag tag-price">$33</span><span class="tag tag-wines">3 Wines</span></div>
+          <div class="past-title">Le Ragnaie — Tuscany, Italy</div>
+          <div class="past-sub">Three expressions of Sangiovese, from everyday charm to Brunello depth.</div>
+          <div class="wine-count">Troncone · Rosso di Montalcino · Brunello</div>
+          <div class="card-links">
+            <a href="https://conta.cc/4a3nmOr">Read More</a>
+            <a href="https://www.petitphilippe.com/shop-region/italy/tuscany/">Shop Wines</a>
+          </div>
+        </div>
+        <div class="past-card" data-type="Producer">
+          <div class="flight-dates">Jan 21 – 25, 2026</div>
+          <div style="display:flex;gap:.4rem;flex-wrap:wrap"><span class="tag tag-type">Producer</span><span class="tag tag-price">$22</span><span class="tag tag-wines">3 Wines</span></div>
+          <div class="past-title">Madson Wines — Santa Cruz Mountains</div>
+          <div class="past-sub">Cool-climate precision from the Santa Cruz Mountains.</div>
+          <div class="wine-count">Chardonnay · Pinot Noir · Côte Blonde Syrah</div>
+          <div class="card-links">
+            <a href="https://conta.cc/4r6WjbP">Read More</a>
+            <a href="https://www.petitphilippe.com/search/santa+cruz+mountains/">Shop Wines</a>
+          </div>
+        </div>
+        <div class="past-card" data-type="Blind">
+          <div class="flight-dates">Jan 15 – 18, 2026</div>
+          <div style="display:flex;gap:.4rem;flex-wrap:wrap"><span class="tag tag-type">Blind</span><span class="tag tag-price">$26</span><span class="tag tag-wines">4 Wines</span></div>
+          <div class="past-title">"Something Isn't White" Blind Challenge</div>
+          <div class="past-sub">Four natural white mutations of classic red grapes. Match all four for a complimentary pour.</div>
+          <div class="wine-count">Mystery · Mystery · Mystery · Mystery</div>
+          <div class="card-links">
+            <a href="https://conta.cc/3L7I8UF">Read More</a>
+            <a href="https://www.petitphilippe.com/shop-category/white/">Shop Wines</a>
+          </div>
+        </div>
+        <div class="past-card" data-type="Producer">
+          <div class="flight-dates">Jan 8 – 11, 2026</div>
+          <div style="display:flex;gap:.4rem;flex-wrap:wrap"><span class="tag tag-type">Producer</span><span class="tag tag-price">$23</span><span class="tag tag-wines">3+1 Wines</span></div>
+          <div class="past-title">Poggio Bonelli — Chianti to Tuscany</div>
+          <div class="past-sub">A journey from Chianti tradition to Tuscan power.</div>
+          <div class="wine-count">Chianti Classico · Riserva · Poggiassai · Tramonto</div>
+          <div class="card-links">
+            <a href="https://conta.cc/3L7I8UF">Read More</a>
+            <a href="https://www.petitphilippe.com/shop-region/italy/">Shop Wines</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- DECEMBER 2025 -->
+    <div class="month-group fade-in">
+      <div class="month-label">December 2025</div>
+      <div class="past-grid">
+        <div class="past-card" data-type="Producer">
+          <div class="flight-dates">Dec 27 – 31, 2025</div>
+          <div style="display:flex;gap:.4rem;flex-wrap:wrap"><span class="tag tag-type">Producer</span><span class="tag tag-price">$44</span><span class="tag tag-wines">3–4 Wines</span></div>
+          <div class="past-title">Champagne Philipponnat — New Year's Eve</div>
+          <div class="past-sub">Heritage, precision, and the art of celebration.</div>
+          <div class="card-links">
+            <a href="https://conta.cc/3La53i3">Read More</a>
+            <a href="https://www.petitphilippe.com/shop-region/france/champagne/">Shop Wines</a>
+          </div>
+        </div>
+        <div class="past-card" data-type="Region">
+          <div class="flight-dates">Dec 18 – 21, 2025</div>
+          <div style="display:flex;gap:.4rem;flex-wrap:wrap"><span class="tag tag-type">Region</span><span class="tag tag-price">$40</span><span class="tag tag-wines">4 Wines</span></div>
+          <div class="past-title">Châteauneuf-du-Pape</div>
+          <div class="past-sub">Four expressions of the Rhône's most iconic appellation.</div>
+          <div class="card-links">
+            <a href="https://conta.cc/48WF8Cg">Read More</a>
+            <a href="https://www.petitphilippe.com/search/chateauneuf/">Shop Wines</a>
+          </div>
+        </div>
+        <div class="past-card" data-type="Region">
+          <div class="flight-dates">Dec 11 – 14, 2025</div>
+          <div style="display:flex;gap:.4rem;flex-wrap:wrap"><span class="tag tag-type">Region</span><span class="tag tag-price">$44</span><span class="tag tag-wines">3 Wines</span></div>
+          <div class="past-title">Bordeaux — Margaux Mix</div>
+          <div class="past-sub">A study of Left Bank Bordeaux, three Margaux châteaux from the 2020 vintage.</div>
+          <div class="card-links">
+            <a href="https://conta.cc/48ROoaN">Read More</a>
+            <a href="https://www.petitphilippe.com/shop-region/france/bordeaux/">Shop Wines</a>
+          </div>
+        </div>
+        <div class="past-card" data-type="Producer">
+          <div class="flight-dates">Dec 4 – 7, 2025</div>
+          <div style="display:flex;gap:.4rem;flex-wrap:wrap"><span class="tag tag-type">Producer</span><span class="tag tag-price">$33</span><span class="tag tag-wines">3 Wines</span></div>
+          <div class="past-title">Ceretto — A Taste of Piemonte</div>
+          <div class="past-sub">Purity, precision, and power from one of Barolo's most visionary producers.</div>
+          <div class="card-links">
+            <a href="https://conta.cc/3KHpKl5">Read More</a>
+            <a href="https://www.petitphilippe.com/shop-region/italy/">Shop Wines</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- NOVEMBER 2025 -->
+    <div class="month-group fade-in">
+      <div class="month-label">November 2025</div>
+      <div class="past-grid">
+        <div class="past-card" data-type="Theme">
+          <div class="flight-dates">Nov 20 – 30, 2025</div>
+          <div style="display:flex;gap:.4rem;flex-wrap:wrap"><span class="tag tag-type">Theme</span><span class="tag tag-price">$35 / $55</span></div>
+          <div class="past-title">Top 10 Wines of 2025</div>
+          <div class="past-sub">The annual lineup — the very best bottles of the year, poured by flight or glass.</div>
+          <div class="card-links">
+            <a href="https://conta.cc/49UGnnu">Read More</a>
+            <a href="https://www.petitphilippe.com/holiday-shop/petit-philippes-annual-top-10-wines/">Shop the List</a>
+          </div>
+        </div>
+        <div class="past-card" data-type="Producer">
+          <div class="flight-dates">Nov 12 – 16, 2025</div>
+          <div style="display:flex;gap:.4rem;flex-wrap:wrap"><span class="tag tag-type">Producer</span><span class="tag tag-price">$29</span><span class="tag tag-wines">3 Wines</span></div>
+          <div class="past-title">Peay Vineyards: The Coastal Collection</div>
+          <div class="past-sub">Three varietals. One coastal terroir. West Sonoma Coast precision.</div>
+          <div class="card-links">
+            <a href="https://conta.cc/3LXK7dX">Read More</a>
+            <a href="https://www.petitphilippe.com/search/peay/">Shop Wines</a>
+          </div>
+        </div>
+        <div class="past-card" data-type="Region">
+          <div class="flight-dates">Nov 6 – 9, 2025</div>
+          <div style="display:flex;gap:.4rem;flex-wrap:wrap"><span class="tag tag-type">Region</span><span class="tag tag-price">$32</span><span class="tag tag-wines">3 Wines</span></div>
+          <div class="past-title">Sips of Spain</div>
+          <div class="past-sub">Bold, bright and beautifully Spanish.</div>
+          <div class="card-links">
+            <a href="https://conta.cc/4oTHQPh">Read More</a>
+            <a href="https://www.petitphilippe.com/shop-region/other-countries/spain/">Shop Wines</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- OCTOBER 2025 -->
+    <div class="month-group fade-in">
+      <div class="month-label">October 2025</div>
+      <div class="past-grid">
+        <div class="past-card" data-type="Blind">
+          <div class="flight-dates">Oct 30 – Nov 2, 2025</div>
+          <div style="display:flex;gap:.4rem;flex-wrap:wrap"><span class="tag tag-type">Blind</span><span class="tag tag-price">$35</span><span class="tag tag-wines">3 Wines</span></div>
+          <div class="past-title">Burgundy Blind Tasting Challenge</div>
+          <div class="past-sub">3 Burgundies at 3 price points. Can you tell the difference?</div>
+          <div class="card-links">
+            <a href="https://conta.cc/4oOR6Ew">Read More</a>
+            <a href="https://www.petitphilippe.com/shop-region/france/burgundy/">Shop Wines</a>
+          </div>
+        </div>
+        <div class="past-card" data-type="Varietal">
+          <div class="flight-dates">Oct 22 – 26, 2025</div>
+          <div style="display:flex;gap:.4rem;flex-wrap:wrap"><span class="tag tag-type">Varietal</span><span class="tag tag-price">$23</span><span class="tag tag-wines">3 Wines</span></div>
+          <div class="past-title">Chenin Blanc: Around the World</div>
+          <div class="past-sub">Three expressions of a noble grape across climate and terroir.</div>
+          <div class="card-links">
+            <a href="https://conta.cc/3L6A0Di">Read More</a>
+            <a href="https://www.petitphilippe.com/shop-category/white/other-white-varietals/chenin-blanc/">Shop Wines</a>
+          </div>
+        </div>
+        <div class="past-card" data-type="Producer">
+          <div class="flight-dates">Oct 15 – 19, 2025</div>
+          <div style="display:flex;gap:.4rem;flex-wrap:wrap"><span class="tag tag-type">Producer</span><span class="tag tag-price">$29</span><span class="tag tag-wines">3 Wines</span></div>
+          <div class="past-title">The Vision of Arnot-Roberts</div>
+          <div class="past-sub">California Modern Classics.</div>
+          <div class="card-links">
+            <a href="https://conta.cc/3W7NQaR">Read More</a>
+            <a href="https://www.petitphilippe.com/shop-region/california/">Shop Wines</a>
+          </div>
+        </div>
+        <div class="past-card" data-type="Region">
+          <div class="flight-dates">Oct 8 – 12, 2025</div>
+          <div style="display:flex;gap:.4rem;flex-wrap:wrap"><span class="tag tag-type">Region</span><span class="tag tag-price">$32</span><span class="tag tag-wines">3 Wines</span></div>
+          <div class="past-title">Tuscan Treasures</div>
+          <div class="past-sub">Selections from the upcoming client trip to the famed vineyards of Tuscany.</div>
+          <div class="card-links">
+            <a href="https://conta.cc/4nzRpTg">Read More</a>
+            <a href="https://www.petitphilippe.com/shop-region/italy/tuscany/">Shop Wines</a>
+          </div>
+        </div>
+        <div class="past-card" data-type="Region">
+          <div class="flight-dates">Oct 1 – 5, 2025</div>
+          <div style="display:flex;gap:.4rem;flex-wrap:wrap"><span class="tag tag-type">Region</span><span class="tag tag-price">$24</span><span class="tag tag-wines">4 Wines</span></div>
+          <div class="past-title">Journey through the Western Cape</div>
+          <div class="past-sub">Stand-out wines from Mark's journey in South Africa.</div>
+          <div class="card-links">
+            <a href="https://conta.cc/46HfxO1">Read More</a>
+            <a href="https://www.petitphilippe.com/shop-region/other-countries/south-africa/">Shop Wines</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ═══ FOOTER ═══ -->
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-inner">
+      <div class="footer-col">
+        <h4>Petit Philippe</h4>
+        <p>Stewards for Your Wine Journey℠</p>
+        <p>4001 Park Road<br>Charlotte, NC 28209</p>
+      </div>
+      <div class="footer-col">
+        <h4>Hours</h4>
+        <p>Tue / Wed: 11 am – 7 pm</p>
+        <p>Thu – Sat: 11 am – 9 pm</p>
+        <p>Sunday: 1 pm – 7 pm</p>
+        <p>Monday: Closed</p>
+      </div>
+      <div class="footer-col">
+        <h4>Contact</h4>
+        <a href="tel:7043329910">(704) 332-9910</a>
+        <a href="mailto:info@petitphilippe.com">info@petitphilippe.com</a>
+        <a href="https://maps.app.goo.gl/6BYnLAPhkxD6uKGu8">Google Maps →</a>
+      </div>
+      <div class="footer-col">
+        <h4>Explore</h4>
+        <a href="https://www.petitphilippe.com/shop-region/">Shop by Region</a>
+        <a href="https://www.petitphilippe.com/upcoming-events/">Upcoming Events</a>
+        <a href="https://www.petitphilippe.com/service/groups-private-events/">Book a Private Event</a>
+        <a href="https://www.petitphilippe.com/wine-atelier/memberships/">Wine Atelier</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 Petit Philippe</span>
+      <span>Weekly Flights · Charlotte, NC</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+/* ── Filter buttons ── */
+document.querySelectorAll('.filter-btn').forEach(btn => {
+  btn.addEventListener('click', function() {
+    const filter = this.dataset.filter;
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    this.classList.add('active');
+    document.querySelectorAll('.past-card[data-type]').forEach(card => {
+      if (filter === 'all' || card.dataset.type === filter) {
+        card.classList.remove('hidden');
+      } else {
+        card.classList.add('hidden');
+      }
+    });
+    // hide empty month groups
+    document.querySelectorAll('.month-group').forEach(group => {
+      const visible = group.querySelectorAll('.past-card:not(.hidden)').length;
+      group.style.display = visible ? '' : 'none';
+    });
+  });
+});
+
+/* ── Scroll fade-in ── */
+const io = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); io.unobserve(e.target); } });
+}, { threshold: 0.08 });
+document.querySelectorAll('.fade-in').forEach(el => io.observe(el));
+</script>
+
+</body>
+</html>
