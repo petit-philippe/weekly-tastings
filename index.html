@@ -3,987 +3,493 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Weekly Flights — Petit Philippe</title>
+<title>Weekly Tastings — Petit Philippe</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+<script>
+const FLIGHT = {
+  dates:       "March 18 – 22, 2026",
+  type:        "Region",
+  price:       "$30",
+  wineCount:   "3",
+  title:       "Jura, France",
+  hook:        "One of France's wildest, most singular regions — oxidative whites, pale reds, and wines unlike anything else on earth. This week we go deep.",
+  wines: [
+    { name: "Domaine Ganevat 'Les Chalasses' Savagnin 2020", region: "Jura, France", descriptor: "Oxidative, nutty, and strikingly complex", price: "$42", product_url: "https://www.petitphilippe.com/", image: "" },
+    { name: "Domaine de la Tournelle Ploussard de Mémoire 2021", region: "Jura, France", descriptor: "Pale, ethereal red with earthy depth", price: "$36", product_url: "https://www.petitphilippe.com/", image: "" },
+    { name: "Overnoy-Crinquand Poulsard 2020", region: "Jura, France", descriptor: "Fragrant, translucent, effortlessly elegant", price: "$55", product_url: "https://www.petitphilippe.com/", image: "" },
+  ],
+  bundle_enabled: false,
+  bundle_url:   "",
+  bundle_price: "",
+  bundle_label: "Shop the Flight",
+  shop_url:     "https://www.petitphilippe.com/shop-region/france/",
+  shop_label:   "Shop French Wine",
+  read_more_url: "",
+  upcoming: [
+    { dates: "Mar 25–29", title: "Women of Wine", type: "Theme" },
+    { dates: "Apr 2–5",   title: "Dorrence",       type: "Producer" },
+    { dates: "Apr 9–12",  title: "TBD",             type: "TBD" },
+  ],
+};
+<\/script>
 
 <style>
-/* ─── DESIGN TOKENS ─── */
 :root {
-  --ink:       #1a1410;
-  --parchment: #f5f0e8;
-  --cream:     #faf7f2;
-  --burgundy:  #6b1c2e;
-  --burgundy2: #8c2a3e;
-  --gold:      #b8925a;
-  --gold-lt:   #d4ab72;
-  --mist:      #e8e2d8;
-  --mid:       #7a6f65;
-  --cork:      #c9b99a;
-  --label:     #3d3028;
+  --ink:#1a1410;--ink2:#2d2420;--parchment:#f5f0e8;--cream:#faf7f2;
+  --burgundy:#6b1c2e;--burgundy2:#8c2a3e;--burgundy-dk:#4a1220;
+  --gold:#b8925a;--gold-lt:#d4ab72;--mist:#e8e2d8;--mid:#7a6f65;
+  --cork:#c9b99a;--label:#3d3028;
+  --ff-serif:'Cormorant Garamond',Georgia,serif;
+  --ff-sans:'Jost',system-ui,sans-serif;
+  --r:5px;--max:900px;--mobile-cta-h:68px;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{background:var(--cream);color:var(--ink);font-family:var(--ff-sans);font-weight:300;line-height:1.7;-webkit-font-smoothing:antialiased;padding-bottom:var(--mobile-cta-h);}
+@media(min-width:700px){body{padding-bottom:0;}}
+a{color:inherit;text-decoration:none;}
+img{display:block;max-width:100%;}
+.container{max-width:var(--max);margin:0 auto;padding:0 clamp(1.2rem,5vw,2.5rem);}
+.section-label{font-size:.62rem;font-weight:600;letter-spacing:.24em;text-transform:uppercase;color:var(--gold);margin-bottom:.5rem;display:flex;align-items:center;gap:.6rem;}
+.section-label::after{content:'';flex:1;height:1px;background:var(--gold);opacity:.3;max-width:48px;}
 
-  --ff-serif: 'Cormorant Garamond', Georgia, serif;
-  --ff-sans:  'Jost', system-ui, sans-serif;
+/* Buttons */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:.4rem;font-family:var(--ff-sans);font-size:.72rem;font-weight:500;letter-spacing:.14em;text-transform:uppercase;padding:.75rem 1.7rem;border-radius:var(--r);border:none;cursor:pointer;transition:all .2s;white-space:nowrap;text-decoration:none;}
+.btn-primary{background:var(--burgundy);color:#fff;}
+.btn-primary:hover{background:var(--burgundy2);}
+.btn-secondary{background:var(--ink);color:var(--cork);}
+.btn-secondary:hover{background:var(--ink2);}
+.btn-outline{background:transparent;color:var(--burgundy);border:1.5px solid var(--burgundy);}
+.btn-outline:hover{background:var(--burgundy);color:#fff;}
+.btn-ghost{background:transparent;color:var(--cork);border:1.5px solid rgba(201,185,154,.35);}
+.btn-ghost:hover{border-color:var(--cork);color:var(--parchment);}
+.btn-gold{background:var(--gold);color:var(--ink);}
+.btn-gold:hover{background:var(--gold-lt);}
+.btn-sm{padding:.5rem 1.1rem;font-size:.66rem;}
+.btn svg{width:14px;height:14px;flex-shrink:0;}
 
-  --r: 4px;
-  --gap: clamp(1.5rem, 4vw, 3rem);
-  --max: 860px;
-}
+/* Tags */
+.tag{font-size:.6rem;font-weight:600;letter-spacing:.16em;text-transform:uppercase;padding:.22rem .65rem;border-radius:100px;}
+.tag-type{background:rgba(107,28,46,.12);color:var(--burgundy);}
+.tag-price{background:rgba(184,146,90,.15);color:#7a5a2a;}
 
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-html { scroll-behavior: smooth; }
-body {
-  background: var(--cream);
-  color: var(--ink);
-  font-family: var(--ff-sans);
-  font-weight: 300;
-  line-height: 1.7;
-  -webkit-font-smoothing: antialiased;
-}
-a { color: inherit; text-decoration: none; }
-img { display: block; max-width: 100%; }
+/* Hero */
+.hero{background:var(--ink);padding:clamp(2.5rem,7vw,4.5rem) 0 clamp(2rem,5vw,3.5rem);position:relative;overflow:hidden;}
+.hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 55% 70% at 85% 40%,rgba(107,28,46,.32) 0%,transparent 65%),radial-gradient(ellipse 35% 50% at 5% 90%,rgba(184,146,90,.07) 0%,transparent 60%);pointer-events:none;}
+.hero-inner{position:relative;display:grid;grid-template-columns:1fr auto;gap:2rem;align-items:start;}
+@media(max-width:620px){.hero-inner{grid-template-columns:1fr;}}
+.hero-eyebrow{display:inline-flex;align-items:center;gap:.5rem;font-size:.62rem;font-weight:500;letter-spacing:.22em;text-transform:uppercase;color:var(--gold);margin-bottom:.9rem;}
+.hero-eyebrow::before,.hero-eyebrow::after{content:'';display:block;width:22px;height:1px;background:var(--gold);}
+.hero h1{font-family:var(--ff-serif);font-size:clamp(2rem,6vw,3.2rem);font-weight:300;line-height:1.1;color:var(--parchment);margin-bottom:.7rem;}
+.hero h1 em{font-style:italic;color:var(--cork);}
+.hero-sub{font-size:.88rem;color:var(--mid);max-width:420px;margin-bottom:1.6rem;line-height:1.65;}
+.hero-stats{display:flex;flex-wrap:wrap;gap:.5rem;margin-bottom:1.6rem;}
+.hero-stat{display:flex;align-items:center;gap:.4rem;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:100px;padding:.32rem .85rem;font-size:.72rem;font-weight:400;color:var(--cork);letter-spacing:.04em;}
+.hero-stat svg{width:12px;height:12px;opacity:.65;}
+.hero-ctas{display:flex;flex-wrap:wrap;gap:.7rem;}
+.hero-aside{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:8px;padding:1.2rem 1.4rem;min-width:160px;max-width:200px;display:flex;flex-direction:column;gap:.7rem;}
+@media(max-width:620px){.hero-aside{max-width:100%;flex-direction:row;flex-wrap:wrap;}}
+.hero-aside-label{font-size:.6rem;font-weight:500;letter-spacing:.18em;text-transform:uppercase;color:var(--mid);}
+.hero-aside-val{font-family:var(--ff-serif);font-size:1.15rem;font-weight:400;color:var(--parchment);line-height:1.2;}
+.hero-aside-price{font-family:var(--ff-serif);font-size:2rem;font-weight:300;color:var(--gold);line-height:1;}
+.hero-aside-sub{font-size:.65rem;color:var(--mid);}
+.hero-divider{height:1px;background:rgba(255,255,255,.07);}
+@media(max-width:620px){.hero-divider{display:none;}}
 
-/* ─── UTILITY ─── */
-.container { max-width: var(--max); margin: 0 auto; padding: 0 clamp(1.2rem, 5vw, 2.5rem); }
-.eyebrow {
-  font-family: var(--ff-sans);
-  font-size: 0.65rem;
-  font-weight: 500;
-  letter-spacing: 0.22em;
-  text-transform: uppercase;
-  color: var(--gold);
-}
-.rule {
-  border: none;
-  border-top: 1px solid var(--mist);
-  margin: 2.5rem 0;
-}
+/* Flight section */
+.flight-section{padding:clamp(2.5rem,6vw,4rem) 0;background:var(--cream);}
+.flight-header{display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:1rem;margin-bottom:2rem;}
+.flight-title{font-family:var(--ff-serif);font-size:clamp(1.8rem,5vw,2.8rem);font-weight:400;line-height:1.1;color:var(--label);margin-bottom:.4rem;}
+.flight-hook{font-family:var(--ff-serif);font-style:italic;font-size:1rem;color:var(--mid);max-width:520px;line-height:1.6;}
+.flight-meta-row{display:flex;flex-wrap:wrap;gap:.5rem;margin-top:.8rem;}
 
-/* ─── HEADER STRIP ─── */
-.site-header {
-  background: var(--ink);
-  padding: 0.9rem 0;
-  position: sticky; top: 0; z-index: 100;
-  box-shadow: 0 1px 12px rgba(0,0,0,0.35);
-}
-.site-header .container {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 1rem;
-}
-.site-header .logo {
-  font-family: var(--ff-serif);
-  font-size: 1.15rem;
-  font-weight: 400;
-  letter-spacing: 0.12em;
-  color: var(--cork);
-  text-transform: uppercase;
-}
-.site-header nav { display: flex; gap: 1.4rem; }
-.site-header nav a {
-  font-size: 0.68rem;
-  font-weight: 500;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--mist);
-  transition: color .2s;
-}
-.site-header nav a:hover { color: var(--gold-lt); }
+/* Wine cards */
+.wines-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:1rem;margin-bottom:1.6rem;}
+.wine-card{background:#fff;border:1px solid var(--mist);border-radius:8px;overflow:hidden;display:flex;flex-direction:column;transition:box-shadow .2s,transform .2s;}
+.wine-card:hover{box-shadow:0 6px 24px rgba(0,0,0,.08);transform:translateY(-2px);}
+.wine-img{height:180px;background:var(--parchment);display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;}
+.wine-img img{height:100%;width:100%;object-fit:cover;}
+.wine-img-placeholder{display:flex;flex-direction:column;align-items:center;gap:.5rem;}
+.wine-img-placeholder svg{width:36px;height:36px;opacity:.2;}
+.wine-img-placeholder span{font-size:.6rem;letter-spacing:.12em;text-transform:uppercase;color:var(--mid);opacity:.5;}
+.wine-number-badge{position:absolute;top:.7rem;left:.7rem;font-family:var(--ff-serif);font-size:1.8rem;font-weight:300;color:rgba(61,48,40,.12);line-height:1;}
+.wine-body{padding:1.1rem 1.2rem;display:flex;flex-direction:column;gap:.4rem;flex:1;}
+.wine-region{font-size:.62rem;font-weight:500;letter-spacing:.16em;text-transform:uppercase;color:var(--gold);}
+.wine-name{font-family:var(--ff-serif);font-size:1.05rem;font-weight:600;color:var(--label);line-height:1.25;}
+.wine-descriptor{font-family:var(--ff-serif);font-style:italic;font-size:.88rem;color:var(--mid);}
+.wine-price-row{display:flex;align-items:center;justify-content:space-between;margin-top:auto;padding-top:.8rem;border-top:1px solid var(--mist);}
+.wine-price{font-size:1rem;font-weight:400;color:var(--label);}
 
-/* ─── HERO ─── */
-.hero {
-  background: var(--ink);
-  padding: clamp(3rem, 8vw, 5.5rem) 0 clamp(2.5rem, 6vw, 4rem);
-  position: relative;
-  overflow: hidden;
-}
-.hero::before {
-  content: '';
-  position: absolute; inset: 0;
-  background:
-    radial-gradient(ellipse 60% 80% at 80% 50%, rgba(107,28,46,0.28) 0%, transparent 70%),
-    radial-gradient(ellipse 40% 60% at 10% 80%, rgba(184,146,90,0.08) 0%, transparent 60%);
-  pointer-events: none;
-}
-.hero .container { position: relative; }
-.hero-label {
-  display: inline-flex; align-items: center; gap: 0.5rem;
-  margin-bottom: 1.2rem;
-}
-.hero-label::before,
-.hero-label::after {
-  content: '';
-  display: block; width: 28px; height: 1px;
-  background: var(--gold);
-}
-.hero h1 {
-  font-family: var(--ff-serif);
-  font-size: clamp(2.4rem, 7vw, 4rem);
-  font-weight: 300;
-  line-height: 1.12;
-  color: var(--parchment);
-  letter-spacing: 0.01em;
-  margin-bottom: 1rem;
-}
-.hero h1 em { font-style: italic; color: var(--cork); }
-.hero-sub {
-  font-size: clamp(0.85rem, 2vw, 0.95rem);
-  color: var(--cork);
-  letter-spacing: 0.08em;
-  margin-bottom: 2rem;
-}
-.hero-btns { display: flex; flex-wrap: wrap; gap: 0.8rem; }
-.btn {
-  display: inline-block;
-  padding: 0.65rem 1.6rem;
-  font-family: var(--ff-sans);
-  font-size: 0.7rem;
-  font-weight: 500;
-  letter-spacing: 0.15em;
-  text-transform: uppercase;
-  border-radius: var(--r);
-  transition: all .22s;
-  cursor: pointer;
-}
-.btn-primary {
-  background: var(--burgundy);
-  color: var(--parchment);
-  border: 1px solid var(--burgundy);
-}
-.btn-primary:hover { background: var(--burgundy2); border-color: var(--burgundy2); }
-.btn-ghost {
-  background: transparent;
-  color: var(--cork);
-  border: 1px solid rgba(201,185,154,0.4);
-}
-.btn-ghost:hover { border-color: var(--cork); color: var(--parchment); }
+/* Flight actions */
+.flight-actions{background:var(--parchment);border:1px solid var(--mist);border-radius:8px;padding:1.4rem 1.6rem;display:flex;flex-wrap:wrap;align-items:center;gap:1rem;justify-content:space-between;}
+.flight-actions-title{font-family:var(--ff-serif);font-size:1.1rem;font-weight:500;color:var(--label);margin-bottom:.2rem;}
+.flight-actions-sub{font-size:.8rem;color:var(--mid);}
+.flight-actions-right{display:flex;flex-wrap:wrap;gap:.7rem;align-items:center;}
 
-/* ─── HOW IT WORKS ─── */
-.how {
-  padding: clamp(2.5rem, 6vw, 4rem) 0;
-  background: var(--parchment);
-  border-bottom: 1px solid var(--mist);
-}
-.how h2 {
-  font-family: var(--ff-serif);
-  font-size: clamp(1.5rem, 4vw, 2rem);
-  font-weight: 400;
-  letter-spacing: 0.03em;
-  color: var(--label);
-  margin-bottom: 0.3rem;
-}
-.how-intro {
-  color: var(--mid);
-  font-size: 0.9rem;
-  margin-bottom: 2.2rem;
-  max-width: 560px;
-}
-.how-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 1.4rem;
-}
-.how-card {
-  background: var(--cream);
-  border: 1px solid var(--mist);
-  border-radius: 6px;
-  padding: 1.5rem 1.4rem;
-  position: relative;
-}
-.how-card .num {
-  font-family: var(--ff-serif);
-  font-size: 2.4rem;
-  font-weight: 300;
-  color: var(--cork);
-  line-height: 1;
-  margin-bottom: 0.6rem;
-  display: block;
-}
-.how-card h3 {
-  font-family: var(--ff-serif);
-  font-size: 1rem;
-  font-weight: 600;
-  color: var(--label);
-  margin-bottom: 0.4rem;
-  letter-spacing: 0.02em;
-}
-.how-card p { font-size: 0.82rem; color: var(--mid); line-height: 1.65; }
-.hours-row {
-  display: flex; flex-wrap: wrap; gap: 0.6rem;
-  margin-top: 2rem;
-}
-.hours-chip {
-  background: var(--ink);
-  color: var(--cork);
-  font-size: 0.7rem;
-  letter-spacing: 0.1em;
-  padding: 0.45rem 1rem;
-  border-radius: 100px;
-}
+/* Bundle */
+.bundle-block{background:linear-gradient(135deg,var(--burgundy-dk) 0%,var(--burgundy) 100%);border-radius:8px;padding:1.4rem 1.6rem;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:1rem;margin-bottom:1rem;position:relative;overflow:hidden;}
+.bundle-block::before{content:'';position:absolute;top:-30px;right:-30px;width:120px;height:120px;border-radius:50%;background:rgba(255,255,255,.04);}
+.bundle-badge{position:absolute;top:0;right:0;background:var(--gold);color:var(--ink);font-size:.58rem;font-weight:600;letter-spacing:.14em;text-transform:uppercase;padding:.25rem .75rem;border-bottom-left-radius:6px;}
+.bundle-eyebrow{font-size:.6rem;font-weight:500;letter-spacing:.2em;text-transform:uppercase;color:rgba(201,185,154,.7);margin-bottom:.3rem;}
+.bundle-title{font-family:var(--ff-serif);font-size:1.3rem;font-weight:400;color:var(--parchment);margin-bottom:.2rem;}
+.bundle-sub{font-size:.8rem;color:rgba(201,185,154,.7);}
+.bundle-price{font-family:var(--ff-serif);font-size:1.5rem;font-weight:300;color:var(--gold);margin-top:.4rem;}
+.bundle-block-right{display:flex;flex-direction:column;gap:.5rem;min-width:160px;}
 
-/* ─── CURRENT FLIGHT ─── */
-.current {
-  padding: clamp(2.5rem, 6vw, 4.5rem) 0;
-}
-.section-head {
-  display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  gap: 0.8rem;
-  margin-bottom: 1.8rem;
-}
-.section-head h2 {
-  font-family: var(--ff-serif);
-  font-size: clamp(1.6rem, 4vw, 2.2rem);
-  font-weight: 400;
-  color: var(--label);
-  letter-spacing: 0.02em;
-}
-.section-head a {
-  font-size: 0.7rem;
-  font-weight: 500;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--burgundy);
-  border-bottom: 1px solid rgba(107,28,46,0.3);
-  padding-bottom: 1px;
-  transition: border-color .2s;
-}
-.section-head a:hover { border-color: var(--burgundy); }
+/* Value */
+.value-section{background:var(--ink);padding:clamp(2.5rem,6vw,4rem) 0;}
+.value-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1.5rem;margin-top:2rem;}
+.value-card{display:flex;flex-direction:column;gap:.5rem;}
+.value-icon{width:36px;height:36px;background:rgba(184,146,90,.12);border:1px solid rgba(184,146,90,.2);border-radius:8px;display:flex;align-items:center;justify-content:center;margin-bottom:.2rem;}
+.value-icon svg{width:18px;height:18px;color:var(--gold);}
+.value-card h3{font-family:var(--ff-serif);font-size:1.05rem;font-weight:500;color:var(--parchment);line-height:1.25;}
+.value-card p{font-size:.8rem;color:var(--mid);line-height:1.65;}
 
-.flight-card {
-  background: var(--ink);
-  border-radius: 8px;
-  overflow: hidden;
-  display: grid;
-  grid-template-columns: 1fr;
-}
-@media(min-width:620px){
-  .flight-card { grid-template-columns: 1fr 1fr; }
-}
-.flight-left {
-  padding: clamp(1.8rem, 5vw, 2.8rem);
-  border-right: 1px solid rgba(255,255,255,0.06);
-}
-.flight-right {
-  padding: clamp(1.8rem, 5vw, 2.8rem);
-  display: flex; flex-direction: column; justify-content: space-between;
-  gap: 1.5rem;
-}
-.flight-meta {
-  display: flex; flex-wrap: wrap; gap: 0.5rem;
-  margin-bottom: 1.2rem;
-}
-.tag {
-  font-size: 0.62rem;
-  font-weight: 500;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  padding: 0.28rem 0.7rem;
-  border-radius: 100px;
-}
-.tag-type { background: rgba(107,28,46,0.6); color: var(--cork); }
-.tag-price { background: rgba(184,146,90,0.18); color: var(--gold-lt); }
-.tag-wines { background: rgba(255,255,255,0.07); color: var(--mist); }
-.flight-dates {
-  font-size: 0.72rem;
-  color: var(--mid);
-  letter-spacing: 0.06em;
-  margin-bottom: 0.6rem;
-}
-.flight-title {
-  font-family: var(--ff-serif);
-  font-size: clamp(1.5rem, 4vw, 2.1rem);
-  font-weight: 400;
-  color: var(--parchment);
-  line-height: 1.18;
-  margin-bottom: 0.5rem;
-}
-.flight-subtitle {
-  font-family: var(--ff-serif);
-  font-style: italic;
-  font-size: 0.95rem;
-  color: var(--cork);
-  margin-bottom: 1.4rem;
-}
-.wine-list { list-style: none; display: flex; flex-direction: column; gap: 0.55rem; }
-.wine-list li {
-  display: flex; align-items: flex-start; gap: 0.5rem;
-  font-size: 0.82rem;
-  color: var(--mist);
-  line-height: 1.5;
-}
-.wine-list li::before {
-  content: '◦';
-  color: var(--gold);
-  flex-shrink: 0;
-  margin-top: 0.05em;
-}
-.wine-list a { color: var(--mist); border-bottom: 1px solid rgba(255,255,255,0.12); transition: border-color .2s, color .2s; }
-.wine-list a:hover { color: var(--gold-lt); border-color: var(--gold-lt); }
-.flight-shop-links { display: flex; flex-wrap: wrap; gap: 0.7rem; margin-top: auto; }
-.link-arrow {
-  font-size: 0.7rem;
-  font-weight: 500;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: var(--gold);
-  display: inline-flex; align-items: center; gap: 0.3rem;
-  transition: gap .2s;
-}
-.link-arrow:hover { gap: 0.5rem; }
-.link-arrow::after { content: '→'; }
+/* How it works */
+.how-section{background:var(--parchment);padding:clamp(2.5rem,6vw,4rem) 0;border-top:1px solid var(--mist);border-bottom:1px solid var(--mist);}
+.how-steps{display:grid;grid-template-columns:repeat(3,1fr);gap:0;margin-top:2rem;}
+@media(max-width:560px){.how-steps{grid-template-columns:1fr;gap:1.5rem;}}
+.how-step{display:flex;flex-direction:column;align-items:flex-start;padding:0 2rem;position:relative;}
+.how-step:not(:last-child)::after{content:'';position:absolute;right:0;top:18px;height:1px;width:100%;background:var(--mist);transform:none;max-width:2rem;right:-1rem;}
+@media(max-width:560px){.how-step{padding:0;}.how-step::after{display:none;}}
+.how-step:first-child{padding-left:0;}
+.how-step:last-child{padding-right:0;}
+.how-num{font-family:var(--ff-serif);font-size:3rem;font-weight:300;color:var(--cork);line-height:1;margin-bottom:.6rem;opacity:.5;}
+.how-step h3{font-family:var(--ff-serif);font-size:1.1rem;font-weight:600;color:var(--label);margin-bottom:.4rem;}
+.how-step p{font-size:.82rem;color:var(--mid);line-height:1.65;}
 
-/* upcoming */
-.upcoming-panel {
-  border-top: 1px solid rgba(255,255,255,0.08);
-  padding-top: 1.4rem;
-}
-.upcoming-panel .eyebrow { margin-bottom: 0.7rem; }
-.upcoming-list { display: flex; flex-direction: column; gap: 0.55rem; }
-.upcoming-item {
-  display: flex; align-items: baseline; gap: 0.7rem;
-  font-size: 0.8rem;
-  color: var(--mid);
-}
-.upcoming-item strong { color: var(--mist); font-weight: 400; }
-.upcoming-item .cat {
-  font-size: 0.62rem;
-  font-weight: 500;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: var(--burgundy2);
-  background: rgba(107,28,46,0.25);
-  padding: 0.15rem 0.5rem;
-  border-radius: 100px;
-  white-space: nowrap;
-}
-.notify-row {
-  display: flex; flex-wrap: wrap; gap: 0.8rem;
-  margin-top: 1.4rem;
-}
+/* Bridge */
+.bridge-section{padding:clamp(2rem,5vw,3.5rem) 0;background:var(--cream);}
+.bridge-inner{display:grid;grid-template-columns:1fr auto;gap:2rem;align-items:center;}
+@media(max-width:580px){.bridge-inner{grid-template-columns:1fr;}}
+.bridge-title{font-family:var(--ff-serif);font-size:clamp(1.4rem,4vw,2rem);font-weight:400;color:var(--label);margin-bottom:.5rem;line-height:1.2;}
+.bridge-body{font-size:.88rem;color:var(--mid);max-width:440px;line-height:1.7;}
 
-/* ─── PAST FLIGHTS ─── */
-.archive {
-  padding: clamp(2rem, 5vw, 4rem) 0 clamp(3rem, 6vw, 5rem);
-  background: var(--parchment);
-  border-top: 1px solid var(--mist);
-}
-.archive-toggle-row {
-  display: flex; align-items: center; gap: 1rem;
-  margin-bottom: 2rem;
-  flex-wrap: wrap;
-}
-.filter-btn {
-  font-size: 0.68rem;
-  font-weight: 500;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  padding: 0.4rem 1rem;
-  border-radius: 100px;
-  border: 1px solid var(--mist);
-  background: transparent;
-  color: var(--mid);
-  cursor: pointer;
-  transition: all .18s;
-}
-.filter-btn.active, .filter-btn:hover {
-  background: var(--ink);
-  color: var(--cork);
-  border-color: var(--ink);
-}
+/* Visit */
+.visit-section{background:var(--parchment);border-top:1px solid var(--mist);border-bottom:1px solid var(--mist);padding:clamp(2rem,5vw,3.5rem) 0;}
+.visit-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:1.5rem;margin-top:1.5rem;}
+.visit-block-label{font-size:.62rem;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);margin-bottom:.6rem;}
+.visit-block p{font-size:.85rem;color:var(--mid);line-height:1.8;}
+.visit-block strong{font-weight:500;color:var(--label);}
+.visit-block a{color:var(--burgundy);border-bottom:1px solid rgba(107,28,46,.25);}
+.visit-block a:hover{border-color:var(--burgundy);}
 
-.month-group { margin-bottom: 2.8rem; }
-.month-label {
-  font-family: var(--ff-serif);
-  font-size: 1.2rem;
-  font-weight: 400;
-  color: var(--label);
-  letter-spacing: 0.06em;
-  margin-bottom: 1.2rem;
-  padding-bottom: 0.6rem;
-  border-bottom: 1px solid var(--mist);
-}
+/* Connect */
+.connect-section{padding:clamp(2rem,5vw,3.5rem) 0;background:var(--cream);}
+.connect-inner{text-align:center;max-width:480px;margin:0 auto;}
+.connect-inner h2{font-family:var(--ff-serif);font-size:clamp(1.5rem,4vw,2.2rem);font-weight:300;color:var(--label);margin-bottom:.5rem;}
+.connect-inner h2 em{font-style:italic;color:var(--burgundy);}
+.connect-inner p{font-size:.88rem;color:var(--mid);margin-bottom:1.6rem;line-height:1.65;}
+.connect-btns{display:flex;flex-wrap:wrap;gap:.8rem;justify-content:center;}
+.upcoming-teaser{margin-top:1.8rem;border-top:1px solid var(--mist);padding-top:1.4rem;}
+.upcoming-teaser-label{font-size:.6rem;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:var(--mid);margin-bottom:.8rem;}
+.upcoming-pills{display:flex;flex-wrap:wrap;gap:.5rem;justify-content:center;}
+.upcoming-pill{display:flex;align-items:center;gap:.5rem;background:var(--parchment);border:1px solid var(--mist);border-radius:100px;padding:.35rem .9rem;font-size:.75rem;color:var(--mid);}
+.upcoming-pill strong{color:var(--label);font-weight:500;}
+.pill-type{font-size:.58rem;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--burgundy);background:rgba(107,28,46,.08);padding:.12rem .45rem;border-radius:100px;}
 
-.past-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-  gap: 1rem;
-}
-.past-card {
-  background: var(--cream);
-  border: 1px solid var(--mist);
-  border-radius: 6px;
-  padding: 1.3rem;
-  transition: box-shadow .2s, transform .2s;
-  display: flex; flex-direction: column; gap: 0.6rem;
-}
-.past-card:hover {
-  box-shadow: 0 4px 20px rgba(0,0,0,0.09);
-  transform: translateY(-1px);
-}
-.past-card .flight-dates { margin: 0; }
-.past-card .past-title {
-  font-family: var(--ff-serif);
-  font-size: 1.1rem;
-  font-weight: 600;
-  color: var(--label);
-  line-height: 1.2;
-}
-.past-card .past-sub {
-  font-family: var(--ff-serif);
-  font-style: italic;
-  font-size: 0.85rem;
-  color: var(--mid);
-}
-.past-card .wine-count {
-  font-size: 0.72rem;
-  color: var(--mid);
-  margin-top: auto;
-}
-.past-card .card-links { display: flex; gap: 1rem; flex-wrap: wrap; margin-top: 0.3rem; }
-.past-card .card-links a {
-  font-size: 0.68rem; font-weight: 500;
-  letter-spacing: 0.1em; text-transform: uppercase;
-  color: var(--burgundy);
-  display: inline-flex; align-items: center; gap: 0.25rem;
-  transition: color .2s;
-}
-.past-card .card-links a:hover { color: var(--burgundy2); }
-.past-card .card-links a::after { content: '↗'; font-size: 0.6em; }
+/* Ecosystem */
+.ecosystem-section{background:var(--ink);padding:clamp(2.5rem,6vw,4rem) 0;}
+.ecosystem-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:1rem;margin-top:2rem;}
+.eco-card{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);border-radius:8px;padding:1.8rem 1.6rem;display:flex;flex-direction:column;gap:.7rem;transition:border-color .2s;}
+.eco-card:hover{border-color:rgba(184,146,90,.3);}
+.eco-eyebrow{font-size:.6rem;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);}
+.eco-card h3{font-family:var(--ff-serif);font-size:1.4rem;font-weight:400;color:var(--parchment);line-height:1.2;}
+.eco-card p{font-size:.82rem;color:var(--mid);line-height:1.65;}
+.eco-link{font-size:.7rem;font-weight:500;letter-spacing:.12em;text-transform:uppercase;color:var(--gold);display:inline-flex;align-items:center;gap:.3rem;margin-top:auto;transition:gap .2s;}
+.eco-link:hover{gap:.5rem;}
+.eco-link::after{content:'→';}
 
-/* hidden via filter */
-.past-card[data-type].hidden { display: none; }
+/* Mobile sticky CTA */
+.mobile-cta-bar{display:none;position:fixed;bottom:0;left:0;right:0;z-index:200;background:var(--ink);border-top:1px solid rgba(255,255,255,.08);padding:.75rem 1.2rem;gap:.6rem;box-shadow:0 -4px 20px rgba(0,0,0,.3);height:var(--mobile-cta-h);align-items:center;}
+@media(max-width:700px){.mobile-cta-bar{display:flex;}}
+.mobile-cta-bar .btn{flex:1;}
 
-/* ─── FOOTER ─── */
-.site-footer {
-  background: var(--ink);
-  color: var(--mid);
-  padding: 3rem 0 2rem;
-}
-.footer-inner {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 2rem;
-  margin-bottom: 2rem;
-}
-.footer-col h4 {
-  font-family: var(--ff-sans);
-  font-size: 0.65rem; font-weight: 500;
-  letter-spacing: 0.18em; text-transform: uppercase;
-  color: var(--cork); margin-bottom: 0.9rem;
-}
-.footer-col p, .footer-col a {
-  font-size: 0.8rem; color: var(--mid); line-height: 1.9;
-  display: block;
-  transition: color .18s;
-}
-.footer-col a:hover { color: var(--gold-lt); }
-.footer-bottom {
-  border-top: 1px solid rgba(255,255,255,0.07);
-  padding-top: 1.5rem;
-  display: flex; justify-content: space-between; flex-wrap: wrap; gap: 0.5rem;
-  font-size: 0.72rem; color: rgba(122,111,101,0.6);
-  letter-spacing: 0.05em;
-}
-
-/* ─── SCROLL FADE IN ─── */
-.fade-in {
-  opacity: 0;
-  transform: translateY(16px);
-  transition: opacity 0.55s ease, transform 0.55s ease;
-}
-.fade-in.visible {
-  opacity: 1;
-  transform: none;
-}
-
-/* ─── RESPONSIVE ─── */
-@media(max-width:500px){
-  .site-header nav { display: none; }
-  .flight-card { grid-template-columns: 1fr; }
-  .flight-left { border-right: none; border-bottom: 1px solid rgba(255,255,255,0.06); }
-}
+/* Fade in */
+.fade-in{opacity:0;transform:translateY(14px);transition:opacity .5s ease,transform .5s ease;}
+.fade-in.visible{opacity:1;transform:none;}
 </style>
 </head>
 <body>
 
-<!-- ═══ SITE HEADER ═══ -->
-<header class="site-header">
+<section class="hero" id="top">
   <div class="container">
-    <a href="https://www.petitphilippe.com" class="logo">Petit Philippe</a>
-    <nav>
-      <a href="https://www.petitphilippe.com/shop-region/">Shop</a>
-      <a href="https://www.petitphilippe.com/upcoming-events/">Events</a>
-      <a href="https://www.petitphilippe.com/service/weekly-tastings/">Tastings</a>
-      <a href="https://www.petitphilippe.com/service/groups-private-events/">Book Event</a>
-    </nav>
-  </div>
-</header>
-
-<!-- ═══ HERO ═══ -->
-<section class="hero">
-  <div class="container">
-    <div class="hero-label eyebrow">Weekly Tastings · Charlotte, NC</div>
-    <h1>Weekly Wine <em>Flights</em><br>at Petit Philippe</h1>
-    <p class="hero-sub">Thursday – Sunday &nbsp;·&nbsp; Curated by our sommeliers &nbsp;·&nbsp; No reservation needed</p>
-    <div class="hero-btns">
-      <a href="https://www.petitphilippe.com/tags/current-flight/" class="btn btn-primary">Shop This Week's Wines</a>
-      <a href="https://maps.app.goo.gl/6BYnLAPhkxD6uKGu8" class="btn btn-ghost">Get Directions</a>
+    <div class="hero-inner">
+      <div class="hero-left">
+        <div class="hero-eyebrow">Weekly Tastings · Charlotte, NC</div>
+        <h1>Weekly Wine <em>Flights</em><br>at Petit Philippe</h1>
+        <p class="hero-sub">Explore curated wines, guided by our team. A new theme pours every week — no reservation needed.</p>
+        <div class="hero-stats" id="hero-stats"></div>
+        <div class="hero-ctas">
+          <a href="#flight" class="btn btn-primary">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
+            View This Week's Flight
+          </a>
+          <a href="https://maps.app.goo.gl/6BYnLAPhkxD6uKGu8" class="btn btn-ghost" target="_blank">Plan Your Visit</a>
+        </div>
+      </div>
+      <div class="hero-aside" id="hero-aside"></div>
     </div>
   </div>
 </section>
 
-<!-- ═══ HOW IT WORKS ═══ -->
-<section class="how">
+<section class="flight-section" id="flight">
   <div class="container">
-    <div class="eyebrow" style="margin-bottom:0.5rem">The Experience</div>
-    <h2>How Our Tastings Work</h2>
-    <p class="how-intro">Every week we curate a themed flight — sometimes a storied region, a single producer, a varietal deep-dive, or a creative theme. Walk in and let us guide you.</p>
-    <div class="how-grid">
-      <div class="how-card fade-in">
-        <span class="num">01</span>
-        <h3>Walk In</h3>
-        <p>No reservation needed. Visit our tasting counter Thursday through Sunday during tasting hours.</p>
-      </div>
-      <div class="how-card fade-in">
-        <span class="num">02</span>
-        <h3>Meet the Flight</h3>
-        <p>3–4 wines tied by a narrative — region, producer, varietal, or theme. Each pour is 2 oz, served one at a time.</p>
-      </div>
-      <div class="how-card fade-in">
-        <span class="num">03</span>
-        <h3>Learn as You Sip</h3>
-        <p>Our team walks you through each wine: region, producer, what to look for — guided but never stuffy.</p>
-      </div>
-      <div class="how-card fade-in">
-        <span class="num">04</span>
-        <h3>Take a Bottle Home</h3>
-        <p>Love something? Purchase any bottle and open it on the spot — no corkage fee. By-the-glass list rotates weekly too.</p>
+    <div class="section-label">On Pour Now</div>
+    <div class="flight-header">
+      <div class="flight-title-block">
+        <h2 class="flight-title" id="flight-title"></h2>
+        <p class="flight-hook" id="flight-hook"></p>
+        <div class="flight-meta-row" id="flight-meta"></div>
       </div>
     </div>
-    <div class="hours-row">
-      <span class="hours-chip">Thu – Fri &nbsp;1 pm – 9 pm</span>
-      <span class="hours-chip">Saturday &nbsp;11 am – 9 pm</span>
-      <span class="hours-chip">Sunday &nbsp;1 pm – 7 pm</span>
-      <span class="hours-chip">4001 Park Rd, Charlotte</span>
+    <div class="bundle-block" id="bundle-block" style="display:none;">
+      <div class="bundle-badge">Featured Flight</div>
+      <div class="bundle-block-left">
+        <div class="bundle-eyebrow">Shop the Complete Flight</div>
+        <div class="bundle-title" id="bundle-title"></div>
+        <div class="bundle-sub">All wines, curated and ready to go.</div>
+        <div class="bundle-price" id="bundle-price"></div>
+      </div>
+      <div class="bundle-block-right">
+        <a href="#" class="btn btn-gold" id="bundle-cta">Shop the Flight</a>
+        <div style="font-size:.7rem;color:rgba(201,185,154,.5);text-align:center;">or add wines individually below</div>
+      </div>
+    </div>
+    <div class="wines-grid" id="wines-grid"></div>
+    <div class="flight-actions fade-in">
+      <div class="flight-actions-left">
+        <div class="flight-actions-title">Want them all?</div>
+        <div class="flight-actions-sub">Open each wine's page to add individually — no bundle required.</div>
+      </div>
+      <div class="flight-actions-right">
+        <button class="btn btn-secondary" onclick="addAllToCart()" id="add-all-btn">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4zM3 6h18M16 10a4 4 0 01-8 0"/></svg>
+          Shop All Wines
+        </button>
+        <a href="#" class="btn btn-outline" id="shop-category-btn"></a>
+      </div>
     </div>
   </div>
 </section>
 
-<!-- ═══ CURRENT FLIGHT ═══ -->
-<section class="current">
+<section class="value-section fade-in">
   <div class="container">
-    <div class="section-head">
+    <div class="section-label" style="color:var(--gold);">Why Visit</div>
+    <div style="font-family:var(--ff-serif);font-size:clamp(1.5rem,4vw,2.2rem);font-weight:300;color:var(--parchment);margin-top:.3rem;">
+      Discover wines you wouldn't<br><em style="font-style:italic;color:var(--cork);">find on your own</em>
+    </div>
+    <div class="value-grid">
+      <div class="value-card">
+        <div class="value-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg></div>
+        <h3>Try Before You Buy</h3>
+        <p>No more guessing at the shelf. Two-ounce pours let you explore with confidence before committing to a bottle.</p>
+      </div>
+      <div class="value-card">
+        <div class="value-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg></div>
+        <h3>Learn What You Like</h3>
+        <p>Our team walks you through each pour — region, producer, what to taste for — guided, but never intimidating.</p>
+      </div>
+      <div class="value-card">
+        <div class="value-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z"/></svg></div>
+        <h3>A New Story Each Week</h3>
+        <p>Region, producer, varietal, theme — every flight has a narrative designed to open up a part of the wine world you haven't explored yet.</p>
+      </div>
+      <div class="value-card">
+        <div class="value-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg></div>
+        <h3>Take Home What You Love</h3>
+        <p>Find something you love? Buy the bottle and open it right there — no corkage fee, ever.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="how-section fade-in">
+  <div class="container">
+    <div class="section-label">The Experience</div>
+    <div style="font-family:var(--ff-serif);font-size:clamp(1.4rem,4vw,2rem);font-weight:400;color:var(--label);margin-top:.3rem;">How it works</div>
+    <div class="how-steps">
+      <div class="how-step">
+        <div class="how-num">01</div>
+        <h3>Choose Your Flight</h3>
+        <p>Walk in Thursday through Sunday — no reservation needed. Our tasting counter is ready for you.</p>
+      </div>
+      <div class="how-step">
+        <div class="how-num">02</div>
+        <h3>We Guide You Through</h3>
+        <p>Three or four 2-oz pours, served one at a time. We share the story behind each wine as you go.</p>
+      </div>
+      <div class="how-step">
+        <div class="how-num">03</div>
+        <h3>Take Home What You Love</h3>
+        <p>Buy any bottle on the spot with zero corkage fee. By-the-glass list rotates weekly too.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="bridge-section fade-in">
+  <div class="container">
+    <div class="bridge-inner">
       <div>
-        <div class="eyebrow" style="margin-bottom:0.35rem">On Pour Now</div>
-        <h2>This Week's Flight</h2>
+        <div class="section-label">Can't Make It In?</div>
+        <h2 class="bridge-title">Take the tasting<br><em style="font-style:italic;color:var(--burgundy);">home with you</em></h2>
+        <p class="bridge-body">Shop this week's wines online and explore at your own pace. Every bottle we pour is available to order — with our tasting notes to guide you.</p>
       </div>
-      <a href="https://www.petitphilippe.com/tags/current-flight/">Shop these wines →</a>
-    </div>
-
-    <div class="flight-card">
-      <!-- LEFT: flight detail -->
-      <div class="flight-left">
-        <div class="flight-meta">
-          <span class="tag tag-type">Varietal</span>
-          <span class="tag tag-price">$32</span>
-          <span class="tag tag-wines">3 Wines</span>
-        </div>
-        <div class="flight-dates">March 12 – 15, 2026</div>
-        <h3 class="flight-title">S.A. Prüm: Riesling,<br>Reintroduced</h3>
-        <p class="flight-subtitle">Three wines from one of Germany's most iconic estates, celebrating the timeless power of Riesling.</p>
-        <ul class="wine-list">
-          <li><a href="https://www.petitphilippe.com/copy-of-joh-jos-pruem-graacher-himmelreich-rieslin.html">S.A. Prüm Blue Trocken Riesling 2022</a></li>
-          <li><a href="https://www.petitphilippe.com/copy-of-sa-pruem-blue-trocken-riesling.html">S.A. Prüm Dry Riesling Wehlen Ortswein 2019</a></li>
-          <li><a href="https://www.petitphilippe.com/copy-of-sa-pruem-dry-riesling-wehlen-ortswein-2018.html">S.A. Prüm 'Graacher Domprobst GG' Riesling 2017</a></li>
-        </ul>
-        <div class="flight-shop-links" style="margin-top:1.4rem">
-          <a href="https://www.petitphilippe.com/shop-region/other-countries/germany/" class="link-arrow">Shop German Wine</a>
-          <a href="https://www.petitphilippe.com/shop-category/white/other-white-varietals/riesling/" class="link-arrow">Shop Riesling</a>
-        </div>
-      </div>
-
-      <!-- RIGHT: upcoming + info -->
-      <div class="flight-right">
-        <div>
-          <div class="upcoming-panel">
-            <div class="eyebrow">Coming Up</div>
-            <ul class="upcoming-list">
-              <li class="upcoming-item"><strong>Mar 18–22</strong> Jura, France <span class="cat">Region</span></li>
-              <li class="upcoming-item"><strong>Mar 25–29</strong> Women of Wine <span class="cat">Theme</span></li>
-              <li class="upcoming-item"><strong>Apr 2–5</strong> Dorrence <span class="cat">Producer</span></li>
-            </ul>
-          </div>
-          <div class="notify-row">
-            <a href="https://lp.constantcontactpages.com/su/fcCXEdr/newsletter" class="btn btn-primary">Get Weekly Updates</a>
-            <a href="https://www.instagram.com/petitphilippe/" class="btn btn-ghost">Follow on Instagram</a>
-          </div>
-        </div>
-        <div style="border-top:1px solid rgba(255,255,255,0.08); padding-top:1.2rem;">
-          <div class="eyebrow" style="margin-bottom:0.6rem">Good to Know</div>
-          <p style="font-size:0.8rem;color:var(--mid);line-height:1.75;">
-            Flights: <strong style="color:var(--mist)">$23–$35</strong> · By-the-glass: <strong style="color:var(--mist)">$14–$25</strong><br>
-            Open any bottle you buy — <strong style="color:var(--mist)">no corkage fee</strong>.<br>
-            Questions? <a href="mailto:info@petitphilippe.com" style="color:var(--gold-lt)">Email us</a> or call <a href="tel:7043329910" style="color:var(--gold-lt)">704-332-9910</a>
-          </p>
-        </div>
+      <div style="display:flex;flex-direction:column;gap:.7rem;">
+        <a href="#" class="btn btn-primary" id="bridge-shop-btn"></a>
+        <a href="https://www.petitphilippe.com/tags/current-flight/" class="btn btn-outline btn-sm">Browse Current Flight Wines</a>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ═══ PAST FLIGHTS ARCHIVE ═══ -->
-<section class="archive">
+<section class="visit-section fade-in">
   <div class="container">
-    <div class="section-head">
-      <div>
-        <div class="eyebrow" style="margin-bottom:0.35rem">Archive</div>
-        <h2>Past Flights</h2>
+    <div class="section-label">Plan Your Visit</div>
+    <div style="font-family:var(--ff-serif);font-size:clamp(1.3rem,3vw,1.8rem);font-weight:400;color:var(--label);margin-top:.3rem;margin-bottom:.3rem;">Walk in. No reservation needed.</div>
+    <div class="visit-grid">
+      <div class="visit-block">
+        <div class="visit-block-label">Tasting Hours</div>
+        <p><strong>Thursday – Friday</strong><br>1 pm – 9 pm<br><strong>Saturday</strong><br>11 am – 9 pm<br><strong>Sunday</strong><br>1 pm – 7 pm</p>
+      </div>
+      <div class="visit-block">
+        <div class="visit-block-label">Store Hours</div>
+        <p><strong>Tue / Wed</strong><br>11 am – 7 pm<br><strong>Mon</strong><br>Closed</p>
+      </div>
+      <div class="visit-block">
+        <div class="visit-block-label">Where We Are</div>
+        <p>4001 Park Road<br>Charlotte, NC 28209<br><br><a href="https://maps.app.goo.gl/6BYnLAPhkxD6uKGu8" target="_blank">Open in Google Maps →</a></p>
+      </div>
+      <div class="visit-block">
+        <div class="visit-block-label">Good to Know</div>
+        <p>Flights: <strong>$23–$35</strong><br>By-the-glass: <strong>$14–$25</strong><br>Open any bottle — <strong>no corkage fee</strong><br><br><a href="tel:7043329910">704-332-9910</a></p>
       </div>
     </div>
-
-    <div class="archive-toggle-row">
-      <button class="filter-btn active" data-filter="all">All</button>
-      <button class="filter-btn" data-filter="Varietal">Varietal</button>
-      <button class="filter-btn" data-filter="Region">Region</button>
-      <button class="filter-btn" data-filter="Producer">Producer</button>
-      <button class="filter-btn" data-filter="Theme">Theme</button>
-      <button class="filter-btn" data-filter="Blind">Blind</button>
-    </div>
-
-    <!-- MARCH 2026 -->
-    <div class="month-group fade-in">
-      <div class="month-label">March 2026</div>
-      <div class="past-grid">
-        <div class="past-card" data-type="Varietal">
-          <div class="flight-dates">March 5 – 8, 2026</div>
-          <div style="display:flex;gap:.4rem;flex-wrap:wrap"><span class="tag tag-type">Varietal</span><span class="tag tag-price">$33</span><span class="tag tag-wines">4 Wines</span></div>
-          <div class="past-title">Field Blends: The Voice of the Vineyard</div>
-          <div class="past-sub">An exploration of how mixed plantings and co-fermentation shape a wine.</div>
-          <div class="wine-count">Groiss · Walter Scott · Drew · Le Piane</div>
-          <div class="card-links">
-            <a href="https://conta.cc/4qYtVIr">Read More</a>
-            <a href="https://www.petitphilippe.com/tags/field-blends/">Shop Wines</a>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- FEBRUARY 2026 -->
-    <div class="month-group fade-in">
-      <div class="month-label">February 2026</div>
-      <div class="past-grid">
-        <div class="past-card" data-type="Producer">
-          <div class="flight-dates">Feb 26 – Mar 1, 2026</div>
-          <div style="display:flex;gap:.4rem;flex-wrap:wrap"><span class="tag tag-type">Producer</span><span class="tag tag-price">$25</span><span class="tag tag-wines">3 Wines</span></div>
-          <div class="past-title">Tenuta de Sterlich</div>
-          <div class="past-sub">A fresh, vibrant trio shaped by Abruzzo's elevation and coastal breezes.</div>
-          <div class="wine-count">Trebbiano · Cerasuolo · Montepulciano</div>
-          <div class="card-links">
-            <a href="https://conta.cc/4qYtVIr">Read More</a>
-            <a href="https://www.petitphilippe.com/shop-region/italy/">Shop Wines</a>
-          </div>
-        </div>
-        <div class="past-card" data-type="Region">
-          <div class="flight-dates">Feb 18 – 22, 2026</div>
-          <div style="display:flex;gap:.4rem;flex-wrap:wrap"><span class="tag tag-type">Region</span><span class="tag tag-price">$35</span><span class="tag tag-wines">3 Wines</span></div>
-          <div class="past-title">Washington State: Built for Bold Reds</div>
-          <div class="past-sub">Sun, soil, and structure from Washington's powerhouse growing regions.</div>
-          <div class="wine-count">Andrew Will · Januik · Hanatoro</div>
-          <div class="card-links">
-            <a href="https://conta.cc/3OkOoJU">Read More</a>
-            <a href="https://www.petitphilippe.com/shop-region/washington/">Shop Wines</a>
-          </div>
-        </div>
-        <div class="past-card" data-type="Theme">
-          <div class="flight-dates">Feb 11 – 15, 2026</div>
-          <div style="display:flex;gap:.4rem;flex-wrap:wrap"><span class="tag tag-type">Theme</span><span class="tag tag-price">$35</span><span class="tag tag-wines">3 Wines</span></div>
-          <div class="past-title">Blush, Bright & Bold: Valentine's Flight</div>
-          <div class="past-sub">A romantic French trio perfect for Valentine's weekend.</div>
-          <div class="wine-count">Coutier Rosé · Sancerre · Saint-Émilion</div>
-          <div class="card-links">
-            <a href="https://conta.cc/4rF3cBs">Read More</a>
-            <a href="https://www.petitphilippe.com/petit-picks/valentines-wine-gifts/">Shop Wines</a>
-          </div>
-        </div>
-        <div class="past-card" data-type="Varietal">
-          <div class="flight-dates">Feb 4 – 8, 2026</div>
-          <div style="display:flex;gap:.4rem;flex-wrap:wrap"><span class="tag tag-type">Varietal</span><span class="tag tag-price">$32</span><span class="tag tag-wines">4 Wines</span></div>
-          <div class="past-title">Cabernet Franc from Around the World</div>
-          <div class="past-sub">How this noble grape expresses itself across four regions and styles.</div>
-          <div class="wine-count">Bobby Wallace · Lambert · Foxen · Ernesto Catena</div>
-          <div class="card-links">
-            <a href="https://conta.cc/4qdllFb">Read More</a>
-            <a href="https://www.petitphilippe.com/shop-category/red/other-red-varietals/cabernet-franc">Shop Wines</a>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- JANUARY 2026 -->
-    <div class="month-group fade-in">
-      <div class="month-label">January 2026</div>
-      <div class="past-grid">
-        <div class="past-card" data-type="Producer">
-          <div class="flight-dates">Jan 28 – 31, 2026</div>
-          <div style="display:flex;gap:.4rem;flex-wrap:wrap"><span class="tag tag-type">Producer</span><span class="tag tag-price">$33</span><span class="tag tag-wines">3 Wines</span></div>
-          <div class="past-title">Le Ragnaie — Tuscany, Italy</div>
-          <div class="past-sub">Three expressions of Sangiovese, from everyday charm to Brunello depth.</div>
-          <div class="wine-count">Troncone · Rosso di Montalcino · Brunello</div>
-          <div class="card-links">
-            <a href="https://conta.cc/4a3nmOr">Read More</a>
-            <a href="https://www.petitphilippe.com/shop-region/italy/tuscany/">Shop Wines</a>
-          </div>
-        </div>
-        <div class="past-card" data-type="Producer">
-          <div class="flight-dates">Jan 21 – 25, 2026</div>
-          <div style="display:flex;gap:.4rem;flex-wrap:wrap"><span class="tag tag-type">Producer</span><span class="tag tag-price">$22</span><span class="tag tag-wines">3 Wines</span></div>
-          <div class="past-title">Madson Wines — Santa Cruz Mountains</div>
-          <div class="past-sub">Cool-climate precision from the Santa Cruz Mountains.</div>
-          <div class="wine-count">Chardonnay · Pinot Noir · Côte Blonde Syrah</div>
-          <div class="card-links">
-            <a href="https://conta.cc/4r6WjbP">Read More</a>
-            <a href="https://www.petitphilippe.com/search/santa+cruz+mountains/">Shop Wines</a>
-          </div>
-        </div>
-        <div class="past-card" data-type="Blind">
-          <div class="flight-dates">Jan 15 – 18, 2026</div>
-          <div style="display:flex;gap:.4rem;flex-wrap:wrap"><span class="tag tag-type">Blind</span><span class="tag tag-price">$26</span><span class="tag tag-wines">4 Wines</span></div>
-          <div class="past-title">"Something Isn't White" Blind Challenge</div>
-          <div class="past-sub">Four natural white mutations of classic red grapes. Match all four for a complimentary pour.</div>
-          <div class="wine-count">Mystery · Mystery · Mystery · Mystery</div>
-          <div class="card-links">
-            <a href="https://conta.cc/3L7I8UF">Read More</a>
-            <a href="https://www.petitphilippe.com/shop-category/white/">Shop Wines</a>
-          </div>
-        </div>
-        <div class="past-card" data-type="Producer">
-          <div class="flight-dates">Jan 8 – 11, 2026</div>
-          <div style="display:flex;gap:.4rem;flex-wrap:wrap"><span class="tag tag-type">Producer</span><span class="tag tag-price">$23</span><span class="tag tag-wines">3+1 Wines</span></div>
-          <div class="past-title">Poggio Bonelli — Chianti to Tuscany</div>
-          <div class="past-sub">A journey from Chianti tradition to Tuscan power.</div>
-          <div class="wine-count">Chianti Classico · Riserva · Poggiassai · Tramonto</div>
-          <div class="card-links">
-            <a href="https://conta.cc/3L7I8UF">Read More</a>
-            <a href="https://www.petitphilippe.com/shop-region/italy/">Shop Wines</a>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- DECEMBER 2025 -->
-    <div class="month-group fade-in">
-      <div class="month-label">December 2025</div>
-      <div class="past-grid">
-        <div class="past-card" data-type="Producer">
-          <div class="flight-dates">Dec 27 – 31, 2025</div>
-          <div style="display:flex;gap:.4rem;flex-wrap:wrap"><span class="tag tag-type">Producer</span><span class="tag tag-price">$44</span><span class="tag tag-wines">3–4 Wines</span></div>
-          <div class="past-title">Champagne Philipponnat — New Year's Eve</div>
-          <div class="past-sub">Heritage, precision, and the art of celebration.</div>
-          <div class="card-links">
-            <a href="https://conta.cc/3La53i3">Read More</a>
-            <a href="https://www.petitphilippe.com/shop-region/france/champagne/">Shop Wines</a>
-          </div>
-        </div>
-        <div class="past-card" data-type="Region">
-          <div class="flight-dates">Dec 18 – 21, 2025</div>
-          <div style="display:flex;gap:.4rem;flex-wrap:wrap"><span class="tag tag-type">Region</span><span class="tag tag-price">$40</span><span class="tag tag-wines">4 Wines</span></div>
-          <div class="past-title">Châteauneuf-du-Pape</div>
-          <div class="past-sub">Four expressions of the Rhône's most iconic appellation.</div>
-          <div class="card-links">
-            <a href="https://conta.cc/48WF8Cg">Read More</a>
-            <a href="https://www.petitphilippe.com/search/chateauneuf/">Shop Wines</a>
-          </div>
-        </div>
-        <div class="past-card" data-type="Region">
-          <div class="flight-dates">Dec 11 – 14, 2025</div>
-          <div style="display:flex;gap:.4rem;flex-wrap:wrap"><span class="tag tag-type">Region</span><span class="tag tag-price">$44</span><span class="tag tag-wines">3 Wines</span></div>
-          <div class="past-title">Bordeaux — Margaux Mix</div>
-          <div class="past-sub">A study of Left Bank Bordeaux, three Margaux châteaux from the 2020 vintage.</div>
-          <div class="card-links">
-            <a href="https://conta.cc/48ROoaN">Read More</a>
-            <a href="https://www.petitphilippe.com/shop-region/france/bordeaux/">Shop Wines</a>
-          </div>
-        </div>
-        <div class="past-card" data-type="Producer">
-          <div class="flight-dates">Dec 4 – 7, 2025</div>
-          <div style="display:flex;gap:.4rem;flex-wrap:wrap"><span class="tag tag-type">Producer</span><span class="tag tag-price">$33</span><span class="tag tag-wines">3 Wines</span></div>
-          <div class="past-title">Ceretto — A Taste of Piemonte</div>
-          <div class="past-sub">Purity, precision, and power from one of Barolo's most visionary producers.</div>
-          <div class="card-links">
-            <a href="https://conta.cc/3KHpKl5">Read More</a>
-            <a href="https://www.petitphilippe.com/shop-region/italy/">Shop Wines</a>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- NOVEMBER 2025 -->
-    <div class="month-group fade-in">
-      <div class="month-label">November 2025</div>
-      <div class="past-grid">
-        <div class="past-card" data-type="Theme">
-          <div class="flight-dates">Nov 20 – 30, 2025</div>
-          <div style="display:flex;gap:.4rem;flex-wrap:wrap"><span class="tag tag-type">Theme</span><span class="tag tag-price">$35 / $55</span></div>
-          <div class="past-title">Top 10 Wines of 2025</div>
-          <div class="past-sub">The annual lineup — the very best bottles of the year, poured by flight or glass.</div>
-          <div class="card-links">
-            <a href="https://conta.cc/49UGnnu">Read More</a>
-            <a href="https://www.petitphilippe.com/holiday-shop/petit-philippes-annual-top-10-wines/">Shop the List</a>
-          </div>
-        </div>
-        <div class="past-card" data-type="Producer">
-          <div class="flight-dates">Nov 12 – 16, 2025</div>
-          <div style="display:flex;gap:.4rem;flex-wrap:wrap"><span class="tag tag-type">Producer</span><span class="tag tag-price">$29</span><span class="tag tag-wines">3 Wines</span></div>
-          <div class="past-title">Peay Vineyards: The Coastal Collection</div>
-          <div class="past-sub">Three varietals. One coastal terroir. West Sonoma Coast precision.</div>
-          <div class="card-links">
-            <a href="https://conta.cc/3LXK7dX">Read More</a>
-            <a href="https://www.petitphilippe.com/search/peay/">Shop Wines</a>
-          </div>
-        </div>
-        <div class="past-card" data-type="Region">
-          <div class="flight-dates">Nov 6 – 9, 2025</div>
-          <div style="display:flex;gap:.4rem;flex-wrap:wrap"><span class="tag tag-type">Region</span><span class="tag tag-price">$32</span><span class="tag tag-wines">3 Wines</span></div>
-          <div class="past-title">Sips of Spain</div>
-          <div class="past-sub">Bold, bright and beautifully Spanish.</div>
-          <div class="card-links">
-            <a href="https://conta.cc/4oTHQPh">Read More</a>
-            <a href="https://www.petitphilippe.com/shop-region/other-countries/spain/">Shop Wines</a>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- OCTOBER 2025 -->
-    <div class="month-group fade-in">
-      <div class="month-label">October 2025</div>
-      <div class="past-grid">
-        <div class="past-card" data-type="Blind">
-          <div class="flight-dates">Oct 30 – Nov 2, 2025</div>
-          <div style="display:flex;gap:.4rem;flex-wrap:wrap"><span class="tag tag-type">Blind</span><span class="tag tag-price">$35</span><span class="tag tag-wines">3 Wines</span></div>
-          <div class="past-title">Burgundy Blind Tasting Challenge</div>
-          <div class="past-sub">3 Burgundies at 3 price points. Can you tell the difference?</div>
-          <div class="card-links">
-            <a href="https://conta.cc/4oOR6Ew">Read More</a>
-            <a href="https://www.petitphilippe.com/shop-region/france/burgundy/">Shop Wines</a>
-          </div>
-        </div>
-        <div class="past-card" data-type="Varietal">
-          <div class="flight-dates">Oct 22 – 26, 2025</div>
-          <div style="display:flex;gap:.4rem;flex-wrap:wrap"><span class="tag tag-type">Varietal</span><span class="tag tag-price">$23</span><span class="tag tag-wines">3 Wines</span></div>
-          <div class="past-title">Chenin Blanc: Around the World</div>
-          <div class="past-sub">Three expressions of a noble grape across climate and terroir.</div>
-          <div class="card-links">
-            <a href="https://conta.cc/3L6A0Di">Read More</a>
-            <a href="https://www.petitphilippe.com/shop-category/white/other-white-varietals/chenin-blanc/">Shop Wines</a>
-          </div>
-        </div>
-        <div class="past-card" data-type="Producer">
-          <div class="flight-dates">Oct 15 – 19, 2025</div>
-          <div style="display:flex;gap:.4rem;flex-wrap:wrap"><span class="tag tag-type">Producer</span><span class="tag tag-price">$29</span><span class="tag tag-wines">3 Wines</span></div>
-          <div class="past-title">The Vision of Arnot-Roberts</div>
-          <div class="past-sub">California Modern Classics.</div>
-          <div class="card-links">
-            <a href="https://conta.cc/3W7NQaR">Read More</a>
-            <a href="https://www.petitphilippe.com/shop-region/california/">Shop Wines</a>
-          </div>
-        </div>
-        <div class="past-card" data-type="Region">
-          <div class="flight-dates">Oct 8 – 12, 2025</div>
-          <div style="display:flex;gap:.4rem;flex-wrap:wrap"><span class="tag tag-type">Region</span><span class="tag tag-price">$32</span><span class="tag tag-wines">3 Wines</span></div>
-          <div class="past-title">Tuscan Treasures</div>
-          <div class="past-sub">Selections from the upcoming client trip to the famed vineyards of Tuscany.</div>
-          <div class="card-links">
-            <a href="https://conta.cc/4nzRpTg">Read More</a>
-            <a href="https://www.petitphilippe.com/shop-region/italy/tuscany/">Shop Wines</a>
-          </div>
-        </div>
-        <div class="past-card" data-type="Region">
-          <div class="flight-dates">Oct 1 – 5, 2025</div>
-          <div style="display:flex;gap:.4rem;flex-wrap:wrap"><span class="tag tag-type">Region</span><span class="tag tag-price">$24</span><span class="tag tag-wines">4 Wines</span></div>
-          <div class="past-title">Journey through the Western Cape</div>
-          <div class="past-sub">Stand-out wines from Mark's journey in South Africa.</div>
-          <div class="card-links">
-            <a href="https://conta.cc/46HfxO1">Read More</a>
-            <a href="https://www.petitphilippe.com/shop-region/other-countries/south-africa/">Shop Wines</a>
-          </div>
-        </div>
-      </div>
-    </div>
-
   </div>
 </section>
 
-<!-- ═══ FOOTER ═══ -->
-<footer class="site-footer">
+<section class="connect-section fade-in">
   <div class="container">
-    <div class="footer-inner">
-      <div class="footer-col">
-        <h4>Petit Philippe</h4>
-        <p>Stewards for Your Wine Journey℠</p>
-        <p>4001 Park Road<br>Charlotte, NC 28209</p>
+    <div class="connect-inner">
+      <div class="section-label" style="justify-content:center;">Stay Connected</div>
+      <h2>Get next week's flight <em>first</em></h2>
+      <p>Each Thursday we send a short note on what's pouring — the theme, the story, the wines. Worth opening.</p>
+      <div class="connect-btns">
+        <a href="https://lp.constantcontactpages.com/su/fcCXEdr/newsletter" class="btn btn-primary">Get Weekly Updates</a>
+        <a href="https://www.instagram.com/petitphilippe/" class="btn btn-outline">Follow on Instagram</a>
       </div>
-      <div class="footer-col">
-        <h4>Hours</h4>
-        <p>Tue / Wed: 11 am – 7 pm</p>
-        <p>Thu – Sat: 11 am – 9 pm</p>
-        <p>Sunday: 1 pm – 7 pm</p>
-        <p>Monday: Closed</p>
-      </div>
-      <div class="footer-col">
-        <h4>Contact</h4>
-        <a href="tel:7043329910">(704) 332-9910</a>
-        <a href="mailto:info@petitphilippe.com">info@petitphilippe.com</a>
-        <a href="https://maps.app.goo.gl/6BYnLAPhkxD6uKGu8">Google Maps →</a>
-      </div>
-      <div class="footer-col">
-        <h4>Explore</h4>
-        <a href="https://www.petitphilippe.com/shop-region/">Shop by Region</a>
-        <a href="https://www.petitphilippe.com/upcoming-events/">Upcoming Events</a>
-        <a href="https://www.petitphilippe.com/service/groups-private-events/">Book a Private Event</a>
-        <a href="https://www.petitphilippe.com/wine-atelier/memberships/">Wine Atelier</a>
-      </div>
-    </div>
-    <div class="footer-bottom">
-      <span>© 2026 Petit Philippe</span>
-      <span>Weekly Flights · Charlotte, NC</span>
+      <div class="upcoming-teaser" id="upcoming-teaser"></div>
     </div>
   </div>
-</footer>
+</section>
+
+<section class="ecosystem-section fade-in">
+  <div class="container">
+    <div class="section-label" style="color:var(--gold);">Keep Exploring</div>
+    <div style="font-family:var(--ff-serif);font-size:clamp(1.3rem,3vw,1.8rem);font-weight:300;color:var(--parchment);margin-top:.3rem;margin-bottom:0;">There's more than just flights</div>
+    <div class="ecosystem-grid">
+      <a href="https://www.petitphilippe.com/service/wine-club/" class="eco-card">
+        <div class="eco-eyebrow">Membership</div>
+        <h3>Wine Club</h3>
+        <p>Ongoing discovery delivered. Three tiers, curated by our sommeliers, with monthly pickup parties in the shop.</p>
+        <span class="eco-link">Explore Wine Club</span>
+      </a>
+      <a href="https://www.petitphilippe.com/wine-atelier/" class="eco-card">
+        <div class="eco-eyebrow">Education</div>
+        <h3>Wine Atelier</h3>
+        <p>Workshops, classes, and structured tastings for those who want to go deeper. Taught by our team.</p>
+        <span class="eco-link">View Workshops</span>
+      </a>
+      <a href="https://www.petitphilippe.com/service/groups-private-events/" class="eco-card">
+        <div class="eco-eyebrow">Private Events</div>
+        <h3>Book a Group Tasting</h3>
+        <p>Bring your team, your crew, or your family. Private and group tastings available by request.</p>
+        <span class="eco-link">Book an Event</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<div class="mobile-cta-bar" id="mobile-cta-bar">
+  <button class="btn btn-secondary" onclick="addAllToCart()">Shop All Wines</button>
+  <a href="https://maps.app.goo.gl/6BYnLAPhkxD6uKGu8" class="btn btn-primary" target="_blank">Plan Your Visit</a>
+</div>
 
 <script>
-/* ── Filter buttons ── */
-document.querySelectorAll('.filter-btn').forEach(btn => {
-  btn.addEventListener('click', function() {
-    const filter = this.dataset.filter;
-    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-    this.classList.add('active');
-    document.querySelectorAll('.past-card[data-type]').forEach(card => {
-      if (filter === 'all' || card.dataset.type === filter) {
-        card.classList.remove('hidden');
-      } else {
-        card.classList.add('hidden');
-      }
-    });
-    // hide empty month groups
-    document.querySelectorAll('.month-group').forEach(group => {
-      const visible = group.querySelectorAll('.past-card:not(.hidden)').length;
-      group.style.display = visible ? '' : 'none';
-    });
-  });
-});
+(function(){
+  const f = FLIGHT;
+  document.getElementById('hero-stats').innerHTML = `
+    <div class="hero-stat"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>${f.dates}</div>
+    <div class="hero-stat"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>${f.price} per flight</div>
+    <div class="hero-stat"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>${f.wineCount} wines</div>`;
+  document.getElementById('hero-aside').innerHTML = `
+    <div><div class="hero-aside-label">This Week</div><div class="hero-aside-val">${f.title}</div></div>
+    <div class="hero-divider"></div>
+    <div><div class="hero-aside-label">Flight Price</div><div class="hero-aside-price">${f.price}</div><div class="hero-aside-sub">${f.wineCount} wines · 2 oz pours</div></div>
+    <div class="hero-divider"></div>
+    <div><div class="hero-aside-label">Type</div><div class="hero-aside-val" style="font-size:.9rem;">${f.type}</div></div>`;
+  document.getElementById('flight-title').textContent = f.title;
+  document.getElementById('flight-hook').textContent  = f.hook;
+  document.getElementById('flight-meta').innerHTML = `<span class="tag tag-type">${f.type}</span><span class="tag tag-price">${f.price} · ${f.wineCount} wines · ${f.dates}</span>`;
+  if(f.bundle_enabled && f.bundle_url){
+    document.getElementById('bundle-block').style.display='flex';
+    document.getElementById('bundle-title').textContent=f.title;
+    document.getElementById('bundle-price').textContent=f.bundle_price;
+    document.getElementById('bundle-cta').href=f.bundle_url;
+    document.getElementById('bundle-cta').textContent=f.bundle_label;
+  }
+  const validWines = f.wines.filter(w=>w.name);
+  document.getElementById('wines-grid').innerHTML = validWines.map((w,i)=>`
+    <div class="wine-card fade-in">
+      <div class="wine-img">
+        <div class="wine-number-badge">0${i+1}</div>
+        ${w.image?`<img src="${w.image}" alt="${w.name}" loading="lazy">`:`<div class="wine-img-placeholder"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><path d="M8 3h8l1 7c0 4-2 8-5 9-3-1-5-5-5-9z"/><path d="M8 3L7 1h10l-1 2"/><line x1="12" y1="19" x2="12" y2="22"/><line x1="9" y1="22" x2="15" y2="22"/></svg><span>Wine ${i+1}</span></div>`}
+      </div>
+      <div class="wine-body">
+        <div class="wine-region">${w.region}</div>
+        <div class="wine-name">${w.name}</div>
+        ${w.descriptor?`<div class="wine-descriptor">${w.descriptor}</div>`:''}
+        <div class="wine-price-row">
+          <div class="wine-price">${w.price}</div>
+          ${w.product_url?`<a href="${w.product_url}" class="btn btn-outline btn-sm" target="_blank">View Wine</a>`:''}
+        </div>
+      </div>
+    </div>`).join('');
+  document.getElementById('shop-category-btn').textContent=f.shop_label;
+  document.getElementById('shop-category-btn').href=f.shop_url;
+  document.getElementById('bridge-shop-btn').textContent=f.shop_label;
+  document.getElementById('bridge-shop-btn').href=f.shop_url;
+  const upcoming=f.upcoming.filter(u=>u.title&&u.title!=='TBD');
+  if(upcoming.length){
+    document.getElementById('upcoming-teaser').innerHTML=`<div class="upcoming-teaser-label">Coming Up</div><div class="upcoming-pills">${upcoming.map(u=>`<div class="upcoming-pill"><strong>${u.dates}</strong>${u.title}<span class="pill-type">${u.type}</span></div>`).join('')}</div>`;
+  }
+})();
 
-/* ── Scroll fade-in ── */
-const io = new IntersectionObserver((entries) => {
-  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); io.unobserve(e.target); } });
-}, { threshold: 0.08 });
-document.querySelectorAll('.fade-in').forEach(el => io.observe(el));
-</script>
+function addAllToCart(){
+  const wines=FLIGHT.wines.filter(w=>w.name&&w.product_url);
+  if(!wines.length){alert('No product links available yet for this flight.');return;}
+  wines.forEach((w,i)=>setTimeout(()=>window.open(w.product_url,'_blank'),i*400));
+  const btn=document.getElementById('add-all-btn');
+  const orig=btn.innerHTML;
+  btn.textContent='Opening wines...';btn.disabled=true;
+  setTimeout(()=>{btn.innerHTML=orig;btn.disabled=false;},2500);
+}
 
+const io=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');io.unobserve(e.target);}});
+},{threshold:.06});
+document.querySelectorAll('.fade-in').forEach(el=>io.observe(el));
+
+const ctaObs=new IntersectionObserver(([e])=>{
+  const bar=document.getElementById('mobile-cta-bar');
+  bar.style.transform=e.isIntersecting?'translateY(100%)':'translateY(0)';
+  bar.style.transition='transform .3s ease';
+},{threshold:.2});
+ctaObs.observe(document.getElementById('flight'));
+<\/script>
 </body>
 </html>
