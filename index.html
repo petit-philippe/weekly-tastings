@@ -9,29 +9,26 @@
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
 
 <script>
-const FLIGHT = {
-  dates:       "March 18 – 22, 2026",
-  type:        "Region",
-  price:       "$30",
-  wineCount:   "3",
-  title:       "Jura, France",
-  hook:        "One of France's wildest, most singular regions — oxidative whites, pale reds, and wines unlike anything else on earth. This week we go deep.",
+const CURRENT_FLIGHT = {
+  dates: "March 19 - 22, 2026",
+  type: "Region",
+  price: "34",
+  wineCount: "3 Wines",
+  title: "White Burgundy: Wines Worth Knowing",
+  subtitle: "Three villages. Three expressions. One grape that keeps surprising.
+Experience three tiers of one of the world's most celebrated wine regions, in a single sitting.",
   wines: [
-    { name: "Domaine Ganevat 'Les Chalasses' Savagnin 2020", region: "Jura, France", descriptor: "Oxidative, nutty, and strikingly complex", price: "$42", product_url: "https://www.petitphilippe.com/", image: "" },
-    { name: "Domaine de la Tournelle Ploussard de Mémoire 2021", region: "Jura, France", descriptor: "Pale, ethereal red with earthy depth", price: "$36", product_url: "https://www.petitphilippe.com/", image: "" },
-    { name: "Overnoy-Crinquand Poulsard 2020", region: "Jura, France", descriptor: "Fragrant, translucent, effortlessly elegant", price: "$55", product_url: "https://www.petitphilippe.com/", image: "" },
+    { name: "Marcel Servin AOC Chablis 2023", url: "https://www.petitphilippe.com/copy-of-marcel-servin-aoc-chablis-2022.html" },
+    { name: "Domaine André Bonhomme Vire-Clesse Vieilles Vignes 2023", url: "https://www.petitphilippe.com/domaine-andre-bonhomme-vire-clesse-vieilles-vignes.html" },
+    { name: "Domaine Rapet Père et Fils Pernand-Vergelesses 'Les Combottes' Blanc 2023", url: "https://www.petitphilippe.com/copy-of-domaine-rapet-pere-et-fils-pernand-vergele.html" },
   ],
-  bundle_enabled: false,
-  bundle_url:   "",
-  bundle_price: "",
-  bundle_label: "Shop the Flight",
-  shop_url:     "https://www.petitphilippe.com/shop-region/france/",
-  shop_label:   "Shop French Wine",
-  read_more_url: "",
+  shopLinks: [
+    { label: "Shop Burgundy Wine", url: "https://www.petitphilippe.com/shop-region/france/burgundy/" },
+  ],
   upcoming: [
-    { dates: "Mar 25–29", title: "Women of Wine", type: "Theme" },
-    { dates: "Apr 2–5",   title: "Dorrence",       type: "Producer" },
-    { dates: "Apr 9–12",  title: "TBD",             type: "TBD" },
+    { dates: "Mar 26-29", title: "Women of Wine", type: "Theme" },
+    { dates: "Apr 2-5", title: "Dorrence", type: "Producer" },
+    { dates: "Apr 9-12", title: "Spot the Champagne Challenge", type: "Blind" },
   ],
 };
 </script>
@@ -211,6 +208,36 @@ img{display:block;max-width:100%;}
 /* Fade in */
 .fade-in{opacity:0;transform:translateY(14px);transition:opacity .5s ease,transform .5s ease;}
 .fade-in.visible{opacity:1;transform:none;}
+
+/* Archive collapsible */
+.archive-section{background:var(--parchment);border-top:1px solid var(--mist);}
+.archive-toggle{width:100%;background:none;border:none;border-bottom:1px solid var(--mist);padding:1.4rem 0;cursor:pointer;display:flex;align-items:center;justify-content:space-between;font-family:var(--ff-sans);}
+.archive-toggle-left{display:flex;align-items:center;gap:1rem;}
+.archive-toggle-label{font-size:.62rem;font-weight:600;letter-spacing:.24em;text-transform:uppercase;color:var(--gold);}
+.archive-toggle-title{font-family:var(--ff-serif);font-size:1.2rem;font-weight:400;color:var(--label);}
+.archive-toggle-count{font-size:.72rem;color:var(--mid);}
+.archive-chevron{width:20px;height:20px;color:var(--mid);transition:transform .3s ease;flex-shrink:0;}
+.archive-chevron.open{transform:rotate(180deg);}
+.archive-body{display:none;padding:2rem 0 3rem;}
+.archive-body.open{display:block;}
+.archive-filter-row{display:flex;flex-wrap:wrap;gap:.6rem;margin-bottom:1.8rem;}
+.filter-btn{font-size:.65rem;font-weight:500;letter-spacing:.12em;text-transform:uppercase;padding:.38rem .9rem;border-radius:100px;border:1px solid var(--mist);background:transparent;color:var(--mid);cursor:pointer;transition:all .18s;}
+.filter-btn.active,.filter-btn:hover{background:var(--ink);color:var(--cork);border-color:var(--ink);}
+.month-group{margin-bottom:2.4rem;}
+.month-label{font-family:var(--ff-serif);font-size:1.1rem;font-weight:400;color:var(--label);letter-spacing:.06em;margin-bottom:1rem;padding-bottom:.5rem;border-bottom:1px solid var(--mist);}
+.past-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:.9rem;}
+.past-card{background:var(--cream);border:1px solid var(--mist);border-radius:6px;padding:1.2rem;display:flex;flex-direction:column;gap:.5rem;transition:box-shadow .2s,transform .2s;}
+.past-card:hover{box-shadow:0 4px 16px rgba(0,0,0,.07);transform:translateY(-1px);}
+.past-card[data-type].hidden{display:none;}
+.past-date{font-size:.68rem;color:var(--mid);letter-spacing:.04em;}
+.past-tags{display:flex;gap:.35rem;flex-wrap:wrap;}
+.past-title{font-family:var(--ff-serif);font-size:1rem;font-weight:600;color:var(--label);line-height:1.2;}
+.past-sub{font-family:var(--ff-serif);font-style:italic;font-size:.82rem;color:var(--mid);}
+.past-producers{font-size:.7rem;color:var(--mid);margin-top:auto;}
+.past-links{display:flex;gap:.8rem;flex-wrap:wrap;margin-top:.3rem;}
+.past-links a{font-size:.65rem;font-weight:500;letter-spacing:.1em;text-transform:uppercase;color:var(--burgundy);display:inline-flex;align-items:center;gap:.2rem;transition:color .2s;}
+.past-links a:hover{color:var(--burgundy2);}
+.past-links a::after{content:'↗';font-size:.6em;}
 </style>
 </head>
 <body>
@@ -414,6 +441,33 @@ img{display:block;max-width:100%;}
   </div>
 </section>
 
+<!-- ═══ ARCHIVE ═══ -->
+<section class="archive-section">
+  <div class="container">
+    <button class="archive-toggle" onclick="toggleArchive()" id="archive-toggle">
+      <div class="archive-toggle-left">
+        <div>
+          <div class="archive-toggle-label">Flight History</div>
+          <div class="archive-toggle-title">Past Flights</div>
+        </div>
+        <div class="archive-toggle-count" id="archive-count"></div>
+      </div>
+      <svg class="archive-chevron" id="archive-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+    </button>
+    <div class="archive-body" id="archive-body">
+      <div class="archive-filter-row">
+        <button class="filter-btn active" data-filter="all">All</button>
+        <button class="filter-btn" data-filter="Varietal">Varietal</button>
+        <button class="filter-btn" data-filter="Region">Region</button>
+        <button class="filter-btn" data-filter="Producer">Producer</button>
+        <button class="filter-btn" data-filter="Theme">Theme</button>
+        <button class="filter-btn" data-filter="Blind">Blind</button>
+      </div>
+      <div id="archive-container"></div>
+    </div>
+  </div>
+</section>
+
 <div class="mobile-cta-bar" id="mobile-cta-bar">
   <button class="btn btn-secondary" onclick="addAllToCart()">Shop All Wines</button>
   <a href="https://maps.app.goo.gl/6BYnLAPhkxD6uKGu8" class="btn btn-primary" target="_blank">Plan Your Visit</a>
@@ -490,6 +544,205 @@ const ctaObs=new IntersectionObserver(([e])=>{
   bar.style.transition='transform .3s ease';
 },{threshold:.2});
 ctaObs.observe(document.getElementById('flight'));
+
+/* ── Archive data ── */
+const ARCHIVE = [
+  // ── PASTE NEW ENTRY HERE EACH WEEK ──
+  {
+    month:"March 2026",dates:"Mar 12 – 15, 2026",type:"Varietal",price:"$32",wineCount:"3 Wines",
+    title:"S.A. Prüm: Riesling, Reintroduced",
+    subtitle:"Three wines from one of Germany's most iconic estates, celebrating the timeless power of Riesling.",
+    producers:"S.A. Prüm Blue Trocken · Wehlen Ortswein · Graacher Domprobst GG",
+    readMoreUrl:"",shopUrl:"https://www.petitphilippe.com/shop-region/other-countries/germany/",shopLabel:"Shop German Wine",
+  },
+  {
+    month:"March 2026",dates:"Mar 5 – 8, 2026",type:"Varietal",price:"$33",wineCount:"4 Wines",
+    title:"Field Blends: The Voice of the Vineyard",
+    subtitle:"An exploration of how mixed plantings and co-fermentation shape a wine.",
+    producers:"Groiss · Walter Scott · Drew · Le Piane",
+    readMoreUrl:"https://conta.cc/4qYtVIr",shopUrl:"https://www.petitphilippe.com/tags/field-blends/",shopLabel:"Shop Field Blends",
+  },
+  {
+    month:"February 2026",dates:"Feb 26 – Mar 1, 2026",type:"Producer",price:"$25",wineCount:"3 Wines",
+    title:"Tenuta de Sterlich — Abruzzo, Italy",
+    subtitle:"A fresh, vibrant trio shaped by Abruzzo's elevation and coastal breezes.",
+    producers:"Trebbiano · Cerasuolo · Montepulciano",
+    readMoreUrl:"https://conta.cc/4qYtVIr",shopUrl:"https://www.petitphilippe.com/shop-region/italy/",shopLabel:"Shop Italian Wine",
+  },
+  {
+    month:"February 2026",dates:"Feb 18 – 22, 2026",type:"Region",price:"$35",wineCount:"3 Wines",
+    title:"Washington State: Built for Bold Reds",
+    subtitle:"Sun, soil, and structure from Washington's powerhouse growing regions.",
+    producers:"Andrew Will · Januik · Hanatoro",
+    readMoreUrl:"https://conta.cc/3OkOoJU",shopUrl:"https://www.petitphilippe.com/shop-region/washington/",shopLabel:"Shop Washington Wine",
+  },
+  {
+    month:"February 2026",dates:"Feb 11 – 15, 2026",type:"Theme",price:"$35",wineCount:"3 Wines",
+    title:"Blush, Bright & Bold: Valentine's Flight",
+    subtitle:"A romantic French trio perfect for Valentine's weekend.",
+    producers:"Coutier Rosé · Sancerre · Saint-Émilion",
+    readMoreUrl:"https://conta.cc/4rF3cBs",shopUrl:"https://www.petitphilippe.com/petit-picks/valentines-wine-gifts/",shopLabel:"Shop Valentine's Wines",
+  },
+  {
+    month:"February 2026",dates:"Feb 4 – 8, 2026",type:"Varietal",price:"$32",wineCount:"4 Wines",
+    title:"Cabernet Franc from Around the World",
+    subtitle:"How this noble grape expresses itself across four regions and styles.",
+    producers:"Bobby Wallace · Lambert · Foxen · Ernesto Catena",
+    readMoreUrl:"https://conta.cc/4qdllFb",shopUrl:"https://www.petitphilippe.com/shop-category/red/other-red-varietals/cabernet-franc",shopLabel:"Shop Cabernet Franc",
+  },
+  {
+    month:"January 2026",dates:"Jan 28 – 31, 2026",type:"Producer",price:"$33",wineCount:"3 Wines",
+    title:"Le Ragnaie — Tuscany, Italy",
+    subtitle:"Three expressions of Sangiovese, from everyday charm to Brunello depth.",
+    producers:"Troncone · Rosso di Montalcino · Brunello",
+    readMoreUrl:"https://conta.cc/4a3nmOr",shopUrl:"https://www.petitphilippe.com/shop-region/italy/tuscany/",shopLabel:"Shop Tuscany Wine",
+  },
+  {
+    month:"January 2026",dates:"Jan 21 – 25, 2026",type:"Producer",price:"$22",wineCount:"3 Wines",
+    title:"Madson Wines — Santa Cruz Mountains",
+    subtitle:"Cool-climate precision from the Santa Cruz Mountains.",
+    producers:"Chardonnay · Pinot Noir · Côte Blonde Syrah",
+    readMoreUrl:"https://conta.cc/4r6WjbP",shopUrl:"https://www.petitphilippe.com/search/santa+cruz+mountains/",shopLabel:"Shop Santa Cruz Wine",
+  },
+  {
+    month:"January 2026",dates:"Jan 15 – 18, 2026",type:"Blind",price:"$26",wineCount:"4 Wines",
+    title:'"Something Isn\'t White" Blind Challenge',
+    subtitle:"Four natural white mutations of classic red grapes. Match all four for a complimentary pour.",
+    producers:"Mystery · Mystery · Mystery · Mystery",
+    readMoreUrl:"https://conta.cc/3L7I8UF",shopUrl:"https://www.petitphilippe.com/shop-category/white/",shopLabel:"Shop White Wine",
+  },
+  {
+    month:"January 2026",dates:"Jan 8 – 11, 2026",type:"Producer",price:"$23",wineCount:"3+1 Wines",
+    title:"Poggio Bonelli — Chianti to Tuscany",
+    subtitle:"A journey from Chianti tradition to Tuscan power.",
+    producers:"Chianti Classico · Riserva · Poggiassai · Tramonto",
+    readMoreUrl:"https://conta.cc/3L7I8UF",shopUrl:"https://www.petitphilippe.com/shop-region/italy/",shopLabel:"Shop Italian Wine",
+  },
+  {
+    month:"December 2025",dates:"Dec 27 – 31, 2025",type:"Producer",price:"$44",wineCount:"3–4 Wines",
+    title:"Champagne Philipponnat — New Year's Eve",
+    subtitle:"Heritage, precision, and the art of celebration.",
+    producers:"",readMoreUrl:"https://conta.cc/3La53i3",shopUrl:"https://www.petitphilippe.com/shop-region/france/champagne/",shopLabel:"Shop Champagne",
+  },
+  {
+    month:"December 2025",dates:"Dec 18 – 21, 2025",type:"Region",price:"$40",wineCount:"4 Wines",
+    title:"Châteauneuf-du-Pape",
+    subtitle:"Four expressions of the Rhône's most iconic appellation.",
+    producers:"",readMoreUrl:"https://conta.cc/48WF8Cg",shopUrl:"https://www.petitphilippe.com/search/chateauneuf/",shopLabel:"Shop Châteauneuf-du-Pape",
+  },
+  {
+    month:"December 2025",dates:"Dec 11 – 14, 2025",type:"Region",price:"$44",wineCount:"3 Wines",
+    title:"Bordeaux — Margaux Mix",
+    subtitle:"A study of Left Bank Bordeaux, three Margaux châteaux from the 2020 vintage.",
+    producers:"",readMoreUrl:"https://conta.cc/48ROoaN",shopUrl:"https://www.petitphilippe.com/shop-region/france/bordeaux/",shopLabel:"Shop Bordeaux Wine",
+  },
+  {
+    month:"December 2025",dates:"Dec 4 – 7, 2025",type:"Producer",price:"$33",wineCount:"3 Wines",
+    title:"Ceretto — A Taste of Piemonte",
+    subtitle:"Purity, precision, and power from one of Barolo's most visionary producers.",
+    producers:"",readMoreUrl:"https://conta.cc/3KHpKl5",shopUrl:"https://www.petitphilippe.com/shop-region/italy/",shopLabel:"Shop Italian Wine",
+  },
+  {
+    month:"November 2025",dates:"Nov 20 – 30, 2025",type:"Theme",price:"$35 / $55",wineCount:"",
+    title:"Top 10 Wines of 2025",
+    subtitle:"The annual lineup — the very best bottles of the year, poured by flight or glass.",
+    producers:"",readMoreUrl:"https://conta.cc/49UGnnu",shopUrl:"https://www.petitphilippe.com/holiday-shop/petit-philippes-annual-top-10-wines/",shopLabel:"Shop the Top 10 List",
+  },
+  {
+    month:"November 2025",dates:"Nov 12 – 16, 2025",type:"Producer",price:"$29",wineCount:"3 Wines",
+    title:"Peay Vineyards: The Coastal Collection",
+    subtitle:"Three varietals. One coastal terroir. West Sonoma Coast precision.",
+    producers:"",readMoreUrl:"https://conta.cc/3LXK7dX",shopUrl:"https://www.petitphilippe.com/search/peay/",shopLabel:"Shop Peay Wine",
+  },
+  {
+    month:"November 2025",dates:"Nov 6 – 9, 2025",type:"Region",price:"$32",wineCount:"3 Wines",
+    title:"Sips of Spain",subtitle:"Bold, bright and beautifully Spanish.",
+    producers:"",readMoreUrl:"https://conta.cc/4oTHQPh",shopUrl:"https://www.petitphilippe.com/shop-region/other-countries/spain/",shopLabel:"Shop Spanish Wine",
+  },
+  {
+    month:"October 2025",dates:"Oct 30 – Nov 2, 2025",type:"Blind",price:"$35",wineCount:"3 Wines",
+    title:"Burgundy Blind Tasting Challenge",
+    subtitle:"3 Burgundies at 3 price points. Can you tell the difference?",
+    producers:"",readMoreUrl:"https://conta.cc/4oOR6Ew",shopUrl:"https://www.petitphilippe.com/shop-region/france/burgundy/",shopLabel:"Shop Burgundy Wine",
+  },
+  {
+    month:"October 2025",dates:"Oct 22 – 26, 2025",type:"Varietal",price:"$23",wineCount:"3 Wines",
+    title:"Chenin Blanc: Around the World",
+    subtitle:"Three expressions of a noble grape across climate and terroir.",
+    producers:"",readMoreUrl:"https://conta.cc/3L6A0Di",shopUrl:"https://www.petitphilippe.com/shop-category/white/other-white-varietals/chenin-blanc/",shopLabel:"Shop Chenin Blanc",
+  },
+  {
+    month:"October 2025",dates:"Oct 15 – 19, 2025",type:"Producer",price:"$29",wineCount:"3 Wines",
+    title:"The Vision of Arnot-Roberts",subtitle:"California Modern Classics.",
+    producers:"",readMoreUrl:"https://conta.cc/3W7NQaR",shopUrl:"https://www.petitphilippe.com/shop-region/california/",shopLabel:"Shop California Wine",
+  },
+  {
+    month:"October 2025",dates:"Oct 8 – 12, 2025",type:"Region",price:"$32",wineCount:"3 Wines",
+    title:"Tuscan Treasures",
+    subtitle:"Selections from the upcoming client trip to the famed vineyards of Tuscany.",
+    producers:"",readMoreUrl:"https://conta.cc/4nzRpTg",shopUrl:"https://www.petitphilippe.com/shop-region/italy/tuscany/",shopLabel:"Shop Tuscany Wine",
+  },
+  {
+    month:"October 2025",dates:"Oct 1 – 5, 2025",type:"Region",price:"$24",wineCount:"4 Wines",
+    title:"Journey through the Western Cape",
+    subtitle:"Stand-out wines from Mark's journey in South Africa.",
+    producers:"",readMoreUrl:"https://conta.cc/46HfxO1",shopUrl:"https://www.petitphilippe.com/shop-region/other-countries/south-africa/",shopLabel:"Shop South Africa Wine",
+  },
+];
+
+/* ── Render archive ── */
+(function(){
+  document.getElementById('archive-count').textContent = ARCHIVE.length + ' flights';
+  const groups={};
+  ARCHIVE.forEach(f=>{if(!groups[f.month])groups[f.month]=[];groups[f.month].push(f);});
+  let html='';
+  Object.keys(groups).forEach(month=>{
+    html+=`<div class="month-group"><div class="month-label">${month}</div><div class="past-grid">`;
+    groups[month].forEach(f=>{
+      html+=`<div class="past-card" data-type="${f.type}">
+        <div class="past-date">${f.dates}</div>
+        <div class="past-tags">
+          <span class="tag tag-type">${f.type}</span>
+          <span class="tag tag-price">${f.price}</span>
+          ${f.wineCount?`<span class="tag" style="background:rgba(0,0,0,.05);color:var(--mid);">${f.wineCount}</span>`:''}
+        </div>
+        <div class="past-title">${f.title}</div>
+        <div class="past-sub">${f.subtitle}</div>
+        ${f.producers?`<div class="past-producers">${f.producers}</div>`:''}
+        <div class="past-links">
+          ${f.readMoreUrl?`<a href="${f.readMoreUrl}" target="_blank">Read More</a>`:''}
+          ${f.shopUrl?`<a href="${f.shopUrl}" target="_blank">${f.shopLabel||'Shop Wines'}</a>`:''}
+        </div>
+      </div>`;
+    });
+    html+=`</div></div>`;
+  });
+  document.getElementById('archive-container').innerHTML=html;
+})();
+
+/* ── Archive toggle ── */
+function toggleArchive(){
+  const body=document.getElementById('archive-body');
+  const chevron=document.getElementById('archive-chevron');
+  const isOpen=body.classList.contains('open');
+  body.classList.toggle('open',!isOpen);
+  chevron.classList.toggle('open',!isOpen);
+}
+
+/* ── Archive filter ── */
+document.querySelectorAll('.filter-btn').forEach(btn=>{
+  btn.addEventListener('click',function(){
+    const filter=this.dataset.filter;
+    document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
+    this.classList.add('active');
+    document.querySelectorAll('.past-card[data-type]').forEach(card=>{
+      card.classList.toggle('hidden',filter!=='all'&&card.dataset.type!==filter);
+    });
+    document.querySelectorAll('.month-group').forEach(group=>{
+      group.style.display=group.querySelectorAll('.past-card:not(.hidden)').length?'':'none';
+    });
+  });
+});
 </script>
 </body>
 </html>
